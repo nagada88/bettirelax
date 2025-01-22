@@ -1,0 +1,172 @@
+{% extends 'main.html'%}
+{% load static %}       
+{% block content %}
+
+<!-- CAROUSEL -->
+<div id="carouselExampleInterval" class="carousel slide carousel-fade" data-bs-ride="carousel"  data-bs-pause="false">  
+  <div class="carousel-inner">
+    <div class="carousel-item active" data-bs-interval="4000">
+      <img src={% static '/app_brandon_photography/images/Carousel/Portrefoto/Carousel4.jpg' %} class="d-block w-100" style="width: auto; max-width: 100%;" alt="esküvői fotó, szerelmes pár mosolyog">
+    </div>
+    <div class="carousel-item">
+      <img src={% static '/app_brandon_photography/images/Carousel/Kisallatfotozas/Carousel2.jpg' %} class="d-block w-100" style="width: auto; max-width: 100%;" alt="kutyafotózás, tettrekész fekete kiskutya">
+    </div>
+    <div class="carousel-item">
+      <img src={% static '/app_brandon_photography/images/Carousel/Kisallatfotozas/Carousel1.jpg' %} class="d-block w-100" style="width: auto; max-width: 100%;" alt="férfi portré naplementében">
+    </div>
+  </div>
+</div>
+
+
+<!-- PORTFOLIO -->
+<div class="container" id="portfolio" style="height: 100px;"></div>
+<h2>Portfolio</h2>
+{% include 'categories.html' %}
+<div class="container" style="height: 200px;"></div>
+
+
+
+<div class="container-fluid activity-cont">
+    <div class="row no-gutters">
+        <div class="col-lg-4 activity">
+            <a href="#video"><img src="{% static 'app_brandon_photography/img/videocam.svg' %}" class="activity-icon" alt="videokamera, kamera"></a>
+            <hr>
+                    rendezvény videók
+                    <br>vállalkozás bemutató videók
+                    <br>marketing videók
+                    <br>
+        </div>
+        <div class="col-lg-4 activity">     
+            <a href="#arak"><img src="{% static 'app_brandon_photography/img/camera.svg' %}" class="activity-icon" alt="fényképező"></a><hr>
+                    esküvői fotózás
+                    <br>termékfotózás
+                    <br>rendezvényfotózás/vállalkozás bemutatás
+                    <br>egyéni, családi, páros portré fotózások
+                    <br>kiskedvenc fotózás
+                    <br>drón fotózás
+        </div>           
+        <div class="col-lg-4 activity">
+            <a href="marketing.html"><img src="{% static 'app_brandon_photography/img/globe.svg' %}" class="activity-icon" alt="webfejlesztés, földgömb"></a>
+            <hr>
+                    vállalkozás bemutató honlapok
+                    <br>esküvői honlap (fotózással együtt)
+                    <br>dinamikus honlapok - blogok
+                    <br>marketing honlapok
+                    <br>teljes fotós, videós, honlap csomag<br><br>
+        </div>        
+    </div>
+</div>
+
+<div style="position: relative;  color: blue;">
+    <div class="custom-shape-divider-bottom-1648235894">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" class="shape-fill"></path>
+            <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" class="shape-fill"></path>
+            <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" class="shape-fill"></path>
+        </svg>
+    </div>
+</div>
+
+<!-- BIO -->
+<div class="container-fluid bio">
+        <div class="row bio-card pb-5">
+                    <div class="col-xl-6 col-12 bio-pict-wrapper">
+                        <img src="{% static 'app_brandon_photography/img/profile_picture.jpg' %}" class="bio-picture" alt="Nagy Ádám fotó, fotós, videókészítő"><br><br>
+                        <h1>NAGY ÁDÁM<br>
+                            FOTÓ | VIDEÓ | WEBLAPKÉSZÍTÉS</h1>
+                        <h2>-BUDAPEST-</h2>
+                    </div>
+                    <div class="col-xl-6 col-12 bio-text">
+                        <h2>Üdvözöllek!</h2>
+                        <p>Önéletrajzszerű bemutatkozás helyett néhány mondatban elmesélném, mit jelent számomra a fotózás/videózás.<br>
+                            Amikor olvastam a híres magyar boldogságkutató Csíkszentmihályi Mihály könyvét a Flow-élményről, akaratlanul is minden második oldalon
+                            a fotózás, videózás jutott eszembe. 12 éve kaptam az első digitális fényképezőmet és azóta is minden egyes fotó-videó túra előtt izgalommal
+                            pakolom össze a felszerelésem, készülök mentálisan a kihívásra, és élvezem a fotózás nyújtotta kihívást elejétől a végéig. Szinte nem tudok úgy
+                            elindulni egy kirándulásra, egy osztálytalálkozóra, hogy ne dobnám be valamelyik fényképezőmet, és ritkán telik el úgy hét, hogy ne ülnék órákat a
+                            gép előtt videóvágással, vagy képfeldolgozással foglalkozván. <br><br>
+                            <h2>Honnan veszem észre, hogy számomra ez az egész igazi flow élmény?</h2>
+                            Elfelejtek enni, teljesen elmerülök a feladat nyújtotta kihívásban, és csak azt veszem észre, hogy úgy teltek el hosszú órák, hogy a fotózás/videózáson kívül
+                            kevés dolgot vettem észre magam körül :). <br><br>
+                            Az általam leginkább kedvelt témákat lásd alább, az eddigi munkáimból pedig a fotó vagy videó menüben szemezgethetsz,
+                            hobbifotózásaim termését pedig <a href="https://www.instagram.com/nagipix/" class="instalink" target="blank"><b>instagram</b></a> oldalamon követheted nyomon.<br>
+                            Fotózással, videózással, honlapkészítéssel kapcsolatban pedig bátran keress elérhetőségeim valamelyikén!
+                        </p>
+                    </div>
+        </div>
+</div>
+
+<!-- PARALLAX -->
+<div class="parallax"></div>
+
+
+
+<!-- ÁRAZÁS -->
+<section class="sect-lehetosegek" id="arak">
+    <div class="container" style="height: 100px;"></div>
+    <h2>LEHETŐSÉGEK</h2>
+    {% include 'arkartyak.html' %}
+    <div class="container" style="height: 10vw;"></div>
+</section>
+
+
+
+
+
+<!-- VIDEO -->
+ 
+<div class="parallax1 shapedividers_com-6275">
+    <h1>VIDEO</h1>
+    <p>marketing | vállalkozás bemutatás | esemény</p>
+    <p>KÉRJ AJÁNLATOT!</p>
+</div>
+
+<div class ="container-fluid">
+  <div class="row" style="height: 3px; background: orange;"></div>
+</div>
+
+<div class="container-fluid videocarous" id="video">
+    <div class="row">
+        <div class="carousel-wrap">
+            <div class="owl-two owl-carousel owl-theme">    
+                <div class="row videoWrapper">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/eZAn_K8PIns?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <div class="row videoWrapper">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/kIhYXr9SduE?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <div class="row videoWrapper">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/LOrVj8FG4Jg?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>            
+    </div>
+</div>   
+
+<!-- KAPCSOLAT -->
+<div class="container-fluid shapedividers_com-2114" id="contact">
+    <div class="row">
+          <div class="col-xl-6 col-12 form-group fg-left">
+              <h1>Kapcsolat</h1><br>
+              <p style="text-align: center;">
+                    Amennyiben kérdésed van, vagy árajánlatot szeretnél kérni, kérlek használd az alábbi űrlapot avagy keress fel <a href="https://www.facebook.com/profile.php?id=100090640083922" target="blank"  class="messenger">Facebook Messengeren </a>. 
+              </p>
+              <br><br>
+              <p style="text-align: center;" >
+                    <img src="{% static 'app_brandon_photography/img/mail-unread-outline.svg' %}" class="mail-icon" alt="levél ikon">
+              </p>
+          </div>
+          <div class="col-xl-6 col-12 form-group fg-right"><br><br>
+                          <form method="post">
+                          {% csrf_token %}
+                              {{form.as_p}}
+
+                              <br><div style="text-align: center;"><button type="submit" class="segitscard-button" style="text-align: center; margin: 0 auto;">elküldöm</button></div>
+                          </form><br><br><br><br><br><br><br><br>
+          </div>
+    </div>
+</div>
+    
+    
+    
+
+{% endblock content %}

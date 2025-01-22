@@ -1,0 +1,23 @@
+{% extends 'main.html'%}
+{% load static %}       
+{% block content %}
+
+<div class="containter-fluid blog-post">
+    <div class="container-fluid" style="height: 100px"></div>        
+    <div class="row">
+        <div class="col-lg-0 col-md-3"></div>
+        <div class="col-lg-12 col-xl-6 blog-content">
+            <img src={{ blogpost.main_image.url }} class="blogpost-header-picture"><br><br>
+            <h1>{{ blogpost.title }}</h1>
+            <p class="datum">{{ blogpost.created_at|date:"M d, Y"  }}</p>
+            {{ blogpost.content.html|safe }}
+            <div class="back-wrapper"><a href="blog" class="btn-blog-vissza">Vissza a többi poszthoz!</a></div>
+        </div>
+        <div class="col-lg-0 col-md-3"></div>
+    </div>
+    <div class="container-fluid" style="height: 100px"></div>
+</div>
+    
+</section>
+
+{% endblock content %}

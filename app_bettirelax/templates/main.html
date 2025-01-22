@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+{% load static %}
+
+
+<html data-wf-page="5e966657bfb4cdde5c3e404a" data-wf-site="5e966657bfb4cd1e103e404b" lang="en">
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8"/>
+<!-- Latest compiled and minified CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+<!-- Open Graph Meta Tags -->
+<meta property="og:url" content="https://nagipix.hu" />
+<meta property="og:title" content="nagipix fotó - kutyafotózás, portré és esküvőfotózás" />
+<meta property="og:image" content="https://www.nagipix.hu/static/app_brandon_photography/images/Carousel/Kisallatfotozas/Carousel1.jpg" />
+<meta property="og:image:alt" content="Szép tacsi naplementében" />
+
+<!-- Twitter Meta Tags -->
+<meta name="twitter:image" content="https://www.nagipix.hu/static/app_brandon_photography/images/Carousel/Kisallatfotozas/Carousel1.jpg" />
+<meta property="twitter:image:alt" content="Szép tacsi naplementében" />
+<meta name="twitter:card" content="naplemente_tacsival" />
+
+<meta name="keywords" content="fotó, videó, marketing, esküvő, kutya, eb, portré, studió, kültéri, beltéri, fotózás, videózás, pillanat, budapest, magyarország">
+
+<!-- jQuery library -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+<script src={% static 'app_brandon_photography/js/lightbox-plus-jquery.min.js' %}></script>
+<script src={% static 'app_brandon_photography/js/jquery.min.js' %}></script>
+<script src={% static 'app_brandon_photography/js/owl.carousel.min.js' %}></script>
+<script src="https://unpkg.com/htmx.org"></script>
+
+<!-- own css -->
+<link rel="stylesheet" href={% static 'app_brandon_photography/brandon_photography.css' %}>
+<link rel="stylesheet" href={% static 'app_brandon_photography/css/lightbox.css' %}>
+<link rel="stylesheet" href={% static 'app_brandon_photography/css/owl.carousel.min.css' %}>
+<link rel="stylesheet" href={% static 'app_brandon_photography/css/owl.theme.default.min.css' %}>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JKPKQPY09B"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-JKPKQPY09B');
+</script>
+
+
+
+<title>
+{{title}}
+</title>
+
+<meta name="description" property="og:description" content="nagipix fotó és videó - kutyafotózás, portré és esküvői fotózás">
+<meta name="author" content="Nagy Ádám">
+<link rel="icon" href={% static 'app_brandon_photography/img/logo-color.png' %}>
+
+</head>
+
+<body>
+<!-- MENU -->
+<nav id="mynav" class="navbar navbar-expand-xl navbar-light sticky-top" style="text-align: center;">
+    <div class="container">
+      <a class="navbar-brand navbar-expand menubrand mr-auto" href="{% url 'intro' %}"><img src="{% static 'app_brandon_photography/img/nagipix.png' %}" class="brand-logo brandicon" alt="nagipix brand logo"></a>
+  
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <div class="collapse navbar-collapse flex" id="navbarTogglerDemo01">
+        <ul class="navbar-nav">
+
+          <li class="nav-item menupoint">
+            <a class="nav-link" href="{% url 'intro' %}#arhely">csomagjaim</a>
+          </li>
+
+          <li class="nav-item menupoint">
+            <a class="nav-link" href="{% url 'blog' %}">blog</a>
+          </li>
+
+          <li class="nav-item menupoint">
+            <a class="nav-link" href="{% url 'kapcsolat' %}">kapcsolat</a>
+          </li>
+
+          <li class="nav-item menupoint">
+            <a class="nav-link menusoci" href="https://www.instagram.com/nagipix_kutyafoto/" target="blank"><i class="fa-brands fa-instagram socicon"></i></a>
+          </li>
+          <li class="nav-item menupoint">
+            <a class="nav-link menusoci" href="https://www.facebook.com/nagipix" target="blank"><i class="fa-brands fa-facebook socicon"></i></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+</nav>
+
+<section>
+{% block content %}
+
+{% endblock content %}
+</section>
+
+
+<div class ="container-fluid footer">
+  <div class="row pt-3">
+      <div class="col-lg-4 footerimage pb-5 pt-5">
+        <img src={% static 'app_brandon_photography/img/nagipix-2.png' %}/>
+      </div>
+      <div class="col-lg-4  pb-xs-5 pb-sm-5 pt-5">
+        <p class="contacts"><img src="https://img.icons8.com/ios/50/null/filled-message.png"/> &nbsp info@nagipix.hu</p>
+        <p>
+          <a href="https://www.instagram.com/nagipix_kutyafoto" target="blank"><i class="fa-brands fa-instagram socicon"></i>&nbsp &nbsp </a>
+          <a href="https://www.facebook.com/nagipix" target="blank"><i class="fa-brands fa-facebook-f socicon"></i>&nbsp &nbsp </a>
+        </p>
+      </div>
+      <div class="col-lg-4 pt-xs-5 pt-sm-5 contacts">
+        <p><a href="impresszum.html">impresszum</a>
+      </div>
+  </div>
+</div>
+
+
+<div class="cookies-eu-banner hidden">
+  Az oldal viselkedésalapú cookie-kat használhat. Amennyiben elfogadod, kattints az elfogadom gombra. <a href="{% static 'app_brandon_photography/cookie/sutik.pdf' %}" download="cookies">adatvédelmi irányelvek</a> 
+  <button>ELFOGADOM</button>
+</div>
+
+
+<script>
+$(document).ready(function(){
+  $('.owl-one').owlCarousel({
+      touchDrag: true,
+      mouseDrag: true,
+      loop:true,
+      margin:10,
+      responsiveClass:true,
+      center: false,
+      nav: true,
+      autoplay:false,
+      autoplayHoverPause:true,
+      autoplayTimeout:5000,
+      navText: ["<div class='nav-btn prev-slide'></div>","<div class='nav-btn next-slide'></div>"],
+      responsive:{
+          0:{
+              items:1,
+          },
+          600:{
+              items:1,
+          },
+          1100:{
+              items:2,
+          },
+          1900:{
+              items:3,
+          }
+      }
+  })
+  $('.owl-three').owlCarousel({
+      touchDrag: true,
+      mouseDrag: true,
+      loop:true,
+      margin:10,
+      center: true,
+      nav: true,
+      autoplay:false,    
+      autoWidth:true,
+      items: 5,
+      autoplayTimeout:3000,
+      navText: ["<div class='nav-btn prev-slide'></div>","<div class='nav-btn next-slide'></div>"],
+  })
+});
+</script>
+
+<script src={% static 'app_brandon_photography/brandon_photography.js' %}></script>
+</html>
