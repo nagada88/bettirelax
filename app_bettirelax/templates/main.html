@@ -11,30 +11,30 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 
 <!-- Open Graph Meta Tags -->
-<meta property="og:url" content="https://nagipix.hu" />
-<meta property="og:title" content="nagipix fotó - kutyafotózás, portré és esküvőfotózás" />
-<meta property="og:image" content="https://www.nagipix.hu/static/app_brandon_photography/images/Carousel/Kisallatfotozas/Carousel1.jpg" />
-<meta property="og:image:alt" content="Szép tacsi naplementében" />
+<meta property="og:url" content="https://bettirelax.hu" />
+<meta property="og:title" content="bettirelax - pihentető masszázs Szigetszentmiklóson" />
+<meta property="og:image" content="https://www.bettirelax.hu/static/app_bettirelax/img/*.jpg" />
+<meta property="og:image:alt" content="Rózsaszínű masszázsszalon" />
 
 <!-- Twitter Meta Tags -->
-<meta name="twitter:image" content="https://www.nagipix.hu/static/app_brandon_photography/images/Carousel/Kisallatfotozas/Carousel1.jpg" />
-<meta property="twitter:image:alt" content="Szép tacsi naplementében" />
-<meta name="twitter:card" content="naplemente_tacsival" />
+<meta name="twitter:image" content="https://www.bettirelax.hu/static/app_bettirelax/img/*.jpg" />
+<meta property="twitter:image:alt" content="Rózsaszínű masszázsszalon" />
+<meta name="twitter:card" content="rozsaszin_masszazsszalon" />
 
-<meta name="keywords" content="fotó, videó, marketing, esküvő, kutya, eb, portré, studió, kültéri, beltéri, fotózás, videózás, pillanat, budapest, magyarország">
+<meta name="keywords" content="masszázs, szigetszentmiklós, babamasszázs">
 
 <!-- jQuery library -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-<script src={% static 'app_brandon_photography/js/lightbox-plus-jquery.min.js' %}></script>
-<script src={% static 'app_brandon_photography/js/jquery.min.js' %}></script>
-<script src={% static 'app_brandon_photography/js/owl.carousel.min.js' %}></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+<script src={% static 'app_bettirelax/js/lightbox-plus-jquery.min.js' %}></script>
+<script src={% static 'app_bettirelax/js/jquery.min.js' %}></script>
+<script src={% static 'app_bettirelax/js/owl.carousel.min.js' %}></script> -->
 <script src="https://unpkg.com/htmx.org"></script>
 
 <!-- own css -->
-<link rel="stylesheet" href={% static 'app_brandon_photography/brandon_photography.css' %}>
-<link rel="stylesheet" href={% static 'app_brandon_photography/css/lightbox.css' %}>
-<link rel="stylesheet" href={% static 'app_brandon_photography/css/owl.carousel.min.css' %}>
-<link rel="stylesheet" href={% static 'app_brandon_photography/css/owl.theme.default.min.css' %}>
+<link rel="stylesheet" href={% static 'app_bettirelax/bettirelax.css' %}>
+<!-- <link rel="stylesheet" href={% static 'app_bettirelax/css/lightbox.css' %}>
+<link rel="stylesheet" href={% static 'app_bettirelax/css/owl.carousel.min.css' %}>
+<link rel="stylesheet" href={% static 'app_bettirelax/css/owl.theme.default.min.css' %}> -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 
 <!-- Google tag (gtag.js) -->
@@ -53,9 +53,9 @@
 {{title}}
 </title>
 
-<meta name="description" property="og:description" content="nagipix fotó és videó - kutyafotózás, portré és esküvői fotózás">
+<meta name="description" property="og:description" content="bettirelax - masszázs Szigetszentmiklóson">
 <meta name="author" content="Nagy Ádám">
-<link rel="icon" href={% static 'app_brandon_photography/img/logo-color.png' %}>
+<link rel="icon" href={% static 'app_bettirelax/img/logo-color.png' %}>
 
 </head>
 
@@ -63,7 +63,7 @@
 <!-- MENU -->
 <nav id="mynav" class="navbar navbar-expand-xl navbar-light sticky-top" style="text-align: center;">
     <div class="container">
-      <a class="navbar-brand navbar-expand menubrand mr-auto" href="{% url 'intro' %}"><img src="{% static 'app_brandon_photography/img/nagipix.png' %}" class="brand-logo brandicon" alt="nagipix brand logo"></a>
+      <a class="navbar-brand navbar-expand menubrand mr-auto" href="{% url 'intro' %}"><img src="{% static 'app_bettirelax/img/bettirelax_logo.png' %}" class="brand-logo brandicon" alt="bettirelax brand logo"></a>
   
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -105,7 +105,7 @@
 <div class ="container-fluid footer">
   <div class="row pt-3">
       <div class="col-lg-4 footerimage pb-5 pt-5">
-        <img src={% static 'app_brandon_photography/img/nagipix-2.png' %}/>
+        <img src={% static 'app_bettirelax/img/nagipix-2.png' %}/>
       </div>
       <div class="col-lg-4  pb-xs-5 pb-sm-5 pt-5">
         <p class="contacts"><img src="https://img.icons8.com/ios/50/null/filled-message.png"/> &nbsp info@nagipix.hu</p>
@@ -122,7 +122,7 @@
 
 
 <div class="cookies-eu-banner hidden">
-  Az oldal viselkedésalapú cookie-kat használhat. Amennyiben elfogadod, kattints az elfogadom gombra. <a href="{% static 'app_brandon_photography/cookie/sutik.pdf' %}" download="cookies">adatvédelmi irányelvek</a> 
+  Az oldal viselkedésalapú cookie-kat használhat. Amennyiben elfogadod, kattints az elfogadom gombra. <a href="{% static 'app_bettirelax/cookie/sutik.pdf' %}" download="cookies">adatvédelmi irányelvek</a> 
   <button>ELFOGADOM</button>
 </div>
 
@@ -172,5 +172,5 @@ $(document).ready(function(){
 });
 </script>
 
-<script src={% static 'app_brandon_photography/brandon_photography.js' %}></script>
+<script src={% static 'app_bettirelax/brandon_photography.js' %}></script>
 </html>
