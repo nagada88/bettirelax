@@ -1,0 +1,85 @@
+{% extends 'main.html'%}
+{% load static %}       
+{% block content %}
+
+<header>
+    <img src={% static 'app_bettirelax/img/headerpic.jpg' %} alt="woman in massage" class="w-100">
+</header>
+
+
+<div class="container aboutme">
+    <div class="row">
+        <div class="col-xl-6">
+            <img src={% static 'app_bettirelax/img/betti.jpg' %} alt="woman in massage" class="w-100">
+        </div>
+        <div class="col-xl-6 aboutme-text">
+            <h2>
+                A STRESSZMENTES ÉLET <span class="highlight"> ITT </span> KEZDŐDIK!
+            </h2>
+            <p>
+                Sziasztok! Betti vagyok, masszőr Szigetszentmiklóson. Az a célom, hogy jobban érezd magad a bőrödben, legyen szó stresszoldásról, feszültségcsökkentésről vagy egy kis kikapcsolódásról. Gyere el, ha szeretnél egy igazán pihentető masszázst!
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="container services">
+    <h1>Masszázsok</h1>
+    <div class="row">
+        <div class="col-xl-4 centered-col">
+            <div class="card">
+                <img class="card-img-top" src={% static 'app_bettirelax/img/studio1.jpg' %} alt="Card image cap">
+                <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+          </div>
+        </div>
+        <div class="col-xl-4 centered-col">
+            <div class="card">
+                <img class="card-img-top" src={% static 'app_bettirelax/img/studio2.jpg' %} alt="Card image cap">
+                <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+          </div>
+        </div>
+        <div class="col-xl-4 centered-col">
+            <div class="card">
+                <img class="card-img-top" src={% static 'app_bettirelax/img/studio4.jpg' %} alt="Card image cap">
+                <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+          </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row g-0">
+        <!-- Első sor -->
+            <div class="col-6 col-md-3 gallery-item">
+                <img src={% static 'app_bettirelax/img/studio1.jpg' %} alt="Image 1">
+            </div>
+        <div class="col-6 col-md-6  gallery-item">
+            <img src={% static 'app_bettirelax/img/studio2.jpg' %} alt="Image 2">
+        </div>
+        <!-- Második sor -->
+        <div class="col-6 col-md-3  gallery-item">
+            <img src={% static 'app_bettirelax/img/studio3.jpg' %} alt="Image 3">
+        </div>
+        <div class="col-6 col-md-8  gallery-item">
+            <img src={% static 'app_bettirelax/img/studio4.jpg' %} alt="Image 4">
+        </div>
+        <!-- Harmadik sor -->
+        <div class="col-12 col-md-4  gallery-item">
+            <img src={% static 'app_bettirelax/img/studio5.jpg' %} alt="Image 5">
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
