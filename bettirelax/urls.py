@@ -20,3 +20,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('app_bettirelax.urls'))
 ]
+
+admin.site.site_header = "Bettirelax Admin"
+admin.site.site_title  = "Bettirelax Admin Portál"
+admin.site.index_title = "Üdvözöllek a Bettirelax Admin Portál felületén"

@@ -79,7 +79,7 @@
                   <a class="nav-link" href="{% url 'introduction' %}">kezdőlap</a>
               </li>
               <li class="nav-item menupoint">
-                  <a class="nav-link" href="">rólam</a>
+                  <a class="nav-link" href="{% url 'introduction' %}#abme">rólam</a>
               </li>
 
               <!-- Szolgáltatások almenü -->
@@ -88,20 +88,23 @@
                       szolgáltatások
                   </a>
                   <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
-                      <li><a class="dropdown-item" href="">Almenü 1</a></li>
+                      <li><a class="dropdown-item" href="{% url 'service' %}">Almenü 1</a></li>
                       <li><a class="dropdown-item" href="">Almenü 2</a></li>
                       <li><a class="dropdown-item" href="">Almenü 3</a></li>
                   </ul>
               </li>
 
               <li class="nav-item menupoint">
-                  <a class="nav-link" href="">árak</a>
+                  <a class="nav-link" href="{% url 'pricelist' %}">árak</a>
               </li>
               <li class="nav-item menupoint">
-                  <a class="nav-link" href="">blog</a>
+                <a class="nav-link" href="{% url 'faq' %}">tudnivalók</a>
               </li>
               <li class="nav-item menupoint">
-                  <a class="nav-link" href="">kapcsolat</a>
+                  <a class="nav-link" href="{% url 'bloglist' %}">blog</a>
+              </li>
+              <li class="nav-item menupoint">
+                  <a class="nav-link" href="{% url 'introduction' %}#cntct">kapcsolat</a>
               </li>
           </ul>
       </div>
@@ -115,7 +118,7 @@
 </section>
 
 
-<div class ="container-fluid footer">
+<!-- <div class ="container-fluid footer">
   <div class="row pt-3">
       <div class="col-lg-4 footerimage pb-5 pt-5">
         <img class="logo" src={% static 'app_bettirelax/img/logo.png' %}/>
@@ -131,8 +134,52 @@
         <p><a href="impresszum.html">impresszum</a>
       </div>
   </div>
-</div>
+</div> -->
 
+<footer class="py-5 position-relative">
+  <div class="container">
+      <!-- Márka logó -->
+      <div class="brand-logo-container text-center position-absolute top-0 start-50 translate-middle">
+          <div class="brand-logo-bg d-inline-block">
+              <img src={% static 'app_bettirelax/img/logo.png' %} alt="Bettirelax" class="logo">
+          </div>
+      </div>
+
+      <div class="row pt-5">
+          <!-- Elérhetőség -->
+          <div class="col-md-4 text-center text-md-start mb-4">
+              <h5>Kapcsolat</h5>
+              <p><i class="fa fa-phone"></i> <a href="tel:+36123456789">+36 1 234 5678</a></p>
+              <p><i class="fa fa-envelope"></i> <a href="mailto:info@masszazsszalon.hu">info@masszazsszalon.hu</a></p>
+              <p><i class="fa fa-map-marker"></i> Budapest, Példa utca 1.</p>
+          </div>
+
+          <!-- Nyitvatartás -->
+          <div class="col-md-4 text-center mb-4">
+              <h5>Nyitvatartás</h5>
+              <p>Hétfő - Péntek: 8:00 - 20:00</p>
+              <p>Szombat: 9:00 - 18:00</p>
+              <p>Vasárnap: Zárva</p>
+          </div>
+
+          <!-- Gyorslinkek -->
+          <div class="col-md-4 text-center text-md-end">
+              <h5>Gyorslinkek</h5>
+              <ul class="list-unstyled">
+                  <li><a href="#about">Rólam</a></li>
+                  <li><a href="#services">Szolgáltatások</a></li>
+                  <li><a href="#prices">Árak</a></li>
+                  <li><a href="#contact">Kapcsolat</a></li>
+              </ul>
+          </div>
+      </div>
+
+      <!-- Lábjegyzet -->
+      <div class="text-center mt-4">
+          <p>© 2025 Bettirelax. Minden jog fenntartva.</p>
+      </div>
+  </div>
+</footer>
 
 <div class="cookies-eu-banner hidden">
   Az oldal viselkedésalapú cookie-kat használhat. Amennyiben elfogadod, kattints az elfogadom gombra. <a href="{% static 'app_bettirelax/cookie/sutik.pdf' %}" download="cookies">adatvédelmi irányelvek</a> 
