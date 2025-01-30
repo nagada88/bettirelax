@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app_bettirelax',
+    'django.contrib.humanize',
     'django_quill',
 ]
 

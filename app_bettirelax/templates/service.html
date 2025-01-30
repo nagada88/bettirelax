@@ -8,9 +8,9 @@
             <div class="container">
                 <div class="caption">
                     <div class="inner">
-                        <div class="cell">
-                            <div class="title">Babamasszázs</div>
-                        </div>
+                        <!-- <div class="cell">
+                            <div class="title">{{ service.service_name }}</div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -26,56 +26,34 @@
     </div>
 </div>
 
-<!-- <div class="header-img">
-     <img src={% static 'app_bettirelax/img/service-header.jpg' %} class="d-block w-100" style="width: auto; max-width: 100%;"> 
-
-</div> -->
-
 <div class="container service-instance">
     <div class="container" style="height: 100px"></div>        
     <div class="row">
-        <div class="col-lg-6  service-content">
-            <h1>{{ service.name }}Babamasszázs</h1>
-
-            Ha nem riadsz vissza a az újdonságoktól, és igazán hatékony masszázst keresel, akkor a svédmasszázzsal kombinált köpölyözés az egyik legjobb választás számodra. A köpölyözés egészségfejlesztő, prevenciós és terápiás célokkal alkalmazható.
-            Lényege, hogy a köpöly csészékben létrehozott vákuum segítségével szeretnénk hatni a kezelt szövetekre.
-            
-            Az úgynevezett csúsztatásos technika során mozgatom a kezelt területen a köpölyt, ezzel fokozva a szövetek vér- és oxigénellátását.
-            
-            Egy másik változata a köpölyözésnek, amikor adott területre több köpölycsésze kerül felhelyezésre, ezek mozgatása nélkül. Egyes tapasztalatok szerint ez kevésbé fájdalmas módszer de a kívánt hatást ebben az esetben is eléri a kezelés. 
-            
-            A köpölyözés gyakorlata több ezer éves hagyományokra tekint vissza, ennek megfelelően pedig számtalan felhasználási területe ismert manapság. 
-            
-            Az általam alkalmazott, svédmasszázsal egybekötött köpölyözés ismérvei:
-            
-                Minden alkalommal, személyre szabottan, teljes mértékben az általad tapasztalt panaszok függvényében alakítjuk ki a terápia menetét. 
-                A mozgásszervi problémád jellemzői, az esetleges fájdalomérzet, valamint a masszázs időtartama határozza meg a svédmasszázs illetve a köpölyözés arányát a kezelés során. Így mindkét terápiás módszer előnyeit kihasználhatjuk. 
-                Igazán eredményesen képes csökkenteni a kötőszöveti letapadást, feszességet. 
-            
-            
-            {{ service.content.html|safe }}
+        <div class="col-lg-6 service-content order-2 order-xl-1">
+            <h1>{{ service.service_name }}</h1>
+            {{ service.service_main_description.html|safe }}
         </div>
-        <div class="col-lg-6 service-image-container">
-            <!-- <img src={{ service.secondary_img.url }}><br><br> -->
-            <img src={% static 'app_bettirelax/img/studio4.jpg' %}><br><br>
+        <div class="col-lg-6 service-image-container order-1 order-xl-2">
+            <img src={{ service.service_main_img_thumb.url }}><br><br>
         </div>
+    </div>
+    <div class="container hotstone">
+        <img  src={% static 'app_bettirelax/img/hotstone.png' %} alt="flower">
     </div>
     <div class="container" style="height: 100px"></div>     
     <div class="row">
         <div class="col-lg-6 service-image-container">
-            <img src={% static 'app_bettirelax/img/studio5.jpg' %}><br><br>
-            <!-- <img src={{ service.main_image.url }}><br><br> -->
+            <img src={{ service.service_secondary_img_thumb.url }}><br><br>
         </div>
         <div class="col-lg-6 service-content">
-            <h1>{{ service.name }}Babamasszázs</h1>
-            A kezelt területen kitágulnak az erek, jelentős mértékben javul a szövetek vérellátása. Lokálisan serkenti az anyagcserét, és javítja a keringést, ezáltal javul a szövetek oxigenizáltsága. Ez azért fontos, mert a fájdalmas, letapadt, rövidült területeken általában különböző mértékben romlik a keringés is.
-            A köpöly nagyszerű eszköz az egyik legkiterjedtebb szövetünk, a fascia kezelésére. Az itt létrejövő letapadások, rövidülések, sérülések nagymértékben befolyásolják mozgásunkat, testtartásunkat, illetve a jelentkező panaszainkat egyaránt.
-            Több kutatás által bizonyítottan hatékony lehet: derékfájás, nyak- és váll fájdalom, fejfájás, és migrén, térdpanaszok, valamint hegszövetek kezelésében.
-            Stimulálja az immunrendszer működését.
-            Alkalmazása során fájdalomcsillapító és gyulladáscsökkentő anyagok szabadulnak fel. 
-            {{ service.content.html|safe }}
+            <h1></h1>
+            {{ service.service_secondary_description.html|safe }}
         </div>
     </div>
+    <div class="container" style="height: 100px"></div>  
+    <p>
+        <center><a href="#" target="_blank" class="contact-button"><i class="fa fa-calendar"></i>&nbsp időpontot foglalok </a></center>
+    </p>          
 </div>
 <div class="container" style="height: 200px"></div> 
 

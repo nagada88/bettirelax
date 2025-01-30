@@ -17,10 +17,10 @@
     </div>
 </div>
 
-<section class="bloglist-section">
+<section>
     <div class="container-fluid" style="height: 3vw"></div>        
     <center><h1>Blog</h1></center>
-    <h2>Cikkek, bejegyzések - technika | felkészülés | utómunka | filozofálás</h2>
+    <h2>Tudnivalók | Érdekességek</h2>
     <div class="container-fluid" style="height: 4vw"></div>        
     <div class="container-fluid bloglist">
     {% for blogpost in bloglist %}
@@ -30,7 +30,7 @@
                 <div class="col-xxl-4 col-lg-12 pb-5">
                     <div class="box-element-blog">
                         <div class="blogpic-constraint">
-                            <a href="{% url 'blog_detail' slug=blogpost.slug %}">
+                            <a href="{% url 'blogpost' slug=blogpost.slug %}">
                                 <div class="blogpic">
                                     <img src={{ blogpost.main_image.url }} class="cover-blog">
                                 </div>
@@ -40,7 +40,7 @@
                             <p><h2><center><strong>{{ blogpost.title }}</strong></center></h2></p>
                             <p class="hirtartalom">{{ blogpost.extract|truncatechars:150 }}</p>
                         </div>
-                    <a href="{% url 'blog_detail' slug=blogpost.slug %}" class="btn-elolvasom">
+                    <a href="{% url 'blogpost' slug=blogpost.slug %}" class="btn-elolvasom">
                         Elolvasom
                     </a>    
                     </div>

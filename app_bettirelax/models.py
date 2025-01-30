@@ -104,6 +104,28 @@ class Service(ImageHandlerMixin, models.Model):
     service_secondary_description = QuillField(blank=True, null=True, verbose_name = "másodlagos leírás")
     IMAGE_FIELDS = ['service_main_img', 'service_secondary_img']
 
+    slug = models.SlugField(unique=True, blank=True, editable=False)  # Egyedi slug mező
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.service_name)  # Automatikus slug generálás
+        super().save(*args, **kwargs)
+
+
+    def get_price_range(self):
+        prices = self.prices.all().order_by('price')  # Árak növekvő sorrendben
+        if not prices.exists():
+            return "Nincs ár megadva"
+        elif prices.count() == 1:
+            return f"{self.format_price(prices.first().price)} Ft"  # Ha csak egy ár van
+        else:
+            return f"{self.format_price(prices.first().price)} Ft - {self.format_price(prices.last().price)} Ft"  # Range
+
+    @staticmethod
+    def format_price(value):
+        """Ezres elválasztó pontokat rak az árba, és eltávolítja a tizedeseket."""
+        return "{:,.0f}".format(value).replace(",", ".")
+    
     def __str__(self):
         return self.service_name
 
@@ -112,7 +134,7 @@ class Service(ImageHandlerMixin, models.Model):
         verbose_name_plural = 'Szolgáltatások'
 
 class ServicePrice(models.Model):
-    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='árak')
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='prices')
     duration_minutes = models.PositiveIntegerField(verbose_name="időtartam (perc)")
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="ár (Ft)")
 
@@ -131,7 +153,7 @@ class BlogPost(models.Model):
     title = models.CharField(max_length=200)
     extract = models.CharField(max_length=200)
     content = QuillField()
-    slug = models.SlugField(max_length=200, unique=True, blank=True, null=True)
+    slug = models.SlugField(max_length=200, unique=True, blank=True, null=True, editable=False)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -185,6 +207,23 @@ class Faq(models.Model):
         verbose_name = 'Gyakori kérdések'
         verbose_name_plural = 'Gyakori kérdések'
 
+
+class Contact(models.Model):
+    email_address = models.CharField(max_length=50, default="", verbose_name="emailcím")
+    address = models.CharField(max_length=50, default="", verbose_name="cím")
+    address_link =models.TextField(max_length=500, default="", verbose_name="térkép link")
+    facebook = models.CharField(max_length=150, default="", verbose_name="facebook")
+    facebook_messenger = models.CharField(max_length=150, default="", verbose_name="facebook messenger")
+    phone_number = models.CharField(max_length=50, default="", verbose_name="telefonszám")
+    contact_text=QuillField(default='', verbose_name="kapcsolat szöveg")
+
+    class Meta:
+        verbose_name = 'Kapcsolat'
+        verbose_name_plural = 'Kapcsolat'
+
+    def __str__(self):
+        return "Kapcsolat"
+    
 # class Availability(models.Model):
 #     AVAILABLE = 'green'
 #     PARTIALLY_BOOKED = 'yellow'

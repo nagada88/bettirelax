@@ -1,6 +1,7 @@
 {% extends 'main.html'%}
 {% load static %}       
 {% block content %}
+{% load custom_filters %}
 
 <div id="slideshow1">
     <div class="slides">
@@ -17,34 +18,45 @@
     </div>
 </div>
 
+<div class="container" style="height: 200px"></div> 
 <div class="container pricelist">
-    <div class="container" style="height: 100px"></div>        
     <div class="row">
         <div class="col-lg-12">
             <h1>Árlista</h1>
+            <div class="container wallet">
+                <img  src={% static 'app_bettirelax/img/wallet.png' %} alt="flower">
+            </div>       
             <h5>Fizetési lehetőségek</h5>
             <p>online: átutalás</p>
             <p>helyszínen: készpénz</p>
         </div>
     </div>
-    <div class="container" style="height: 100px"></div>
-    <h5>Babamasszázs</h5><br><br>
-    <div class="row">
-        <div class="col-lg-6">
-            <b>időtartam</b>
+    <div class="container" style="height: 100px"></div> 
+    {% for service in services %}
+        <h5>{{ service.service_name }}</h5><br>
+        <div class="row">
+            <div class="col-6">
+                <b>időtartam</b>
+            </div>
+            <div class="col-6">
+                <b>ár</b>
+            </div>
         </div>
-        <div class="col-lg-6">
-            <b>ár</b>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-6">
-            45 perc
-        </div>
-        <div class="col-lg-6">
-            12.000Ft
-        </div>
-    </div>
+        {% if service.prices.all %}
+            {% for price in service.prices.all %}
+                <div class="row">
+                    <div class="col-6">
+                        {{ price.duration_minutes }} perc
+                    </div>
+                    <div class="col-6">
+                        {{ price.price|thousand_separator }} Ft
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Nincs ár megadva.</p>
+        {% endif %}
+    {% endfor %}
 </div>
 <div class="container" style="height: 200px"></div> 
 

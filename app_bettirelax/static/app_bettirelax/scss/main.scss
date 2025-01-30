@@ -11,24 +11,20 @@ h2, h1, h5{
     font-family: $font-family-menu;
     text-transform: uppercase;
     color: $font-gray;
+    font-weight: 300;
 }
 
 h1, h2{
     text-align: center;
-    padding-bottom: 3rem;
-}
-
-.brand-logo{
-    width:150px;
-    margin-bottom: 0px;
-    margin-left: 22px;
+    padding-bottom: 2rem;
 }
 
 .navbar-nav .nav-item {
     margin: 0 10px;
     font-family: $font-family-menu;
     text-transform: uppercase;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
+    font-weight: 100;
 }
 
 .navbar .nav-link{
@@ -90,32 +86,98 @@ h1, h2{
     object-fit: cover; /* Arányosan kitölti a cellát, a széleken levágva */
 }
 
+.first-row{
+    @media (max-width: 576px) {
+        height: 200px;
+    }
+}
+
 .services{
     .centered-col{
         padding: 20px 0px;
     }
-    padding-top: 100px;
 }
 
 .card{
     margin: 0 auto;
+    border: none;
+    box-shadow: 0px 20px 20px rgba(37, 37, 37, 0.2);
+    border-radius: 0;
+    background-color: $secondary;
+    h5{
+        font-weight: 100;
+        text-align: center;
+        font-size: 1.4rem;
+    }
+    p{
+        font-family: $font-family-menu;
+        font-weight: 100;
+    }
+
+    a:hover img {
+        opacity: 0.7;
+    }
+    
     img{
-        height: 400px;
         object-fit: cover; /* Arányosan kitölti a cellát, a széleken levágva */
+        border-radius: 0;
+        transition: all ease-in-out .2s;
+        @media (max-width: 576px) {
+            height: 320px;
+            width: 320px;
+        }
+        @media (min-width: 576px) {
+            height: 350px;
+            width: 350px;
+        }
     }
     @media (max-width: 576px) {
-        height: 600px;
-        width: 300px;
+        height: 500px;
+        width: 320px;
     }
     @media (min-width: 576px) {
-        height: 600px;
-        width: 400px;
+        height: 550px;
+        width: 350px;
     }
-    background-color: $secondary;
+}
+
+.btn-primary{
+    background-color: $button-pink !important;
+    border: none;
+    font-family: $font-family-menu;
+    font-weight: 100;
+    color: $font-gray;
+    transition: all ease-in-out .2s;
+    -moz-transition: all ease-in-out .2s;
+    -webkit-transition: all ease-in-out .2s;
+    box-shadow: 10px 0 10px 0px rgba(56, 56, 56, 0.07);    
+}
+
+.btn-primary:hover{
+    background-color: $font-gray !important;
+    color: $secondary;
 }
 
 .contact{
-    padding: 200px 0;
+
+    p, h3{
+        margin: 0 20px;
+    }
+    h3{
+        font-family: $font-family-menu;
+        font-weight: 100;
+        text-align: center;
+        padding-bottom: 2rem;
+    }
+    h2{
+        padding: 1rem;
+    } 
+    @media (max-width: 576px) {
+        padding: 2vw 0 250px 0;
+    }
+    @media (min-width: 576px) {
+        padding: 2vw 0 10vw 0;
+    }
 }
 
 .contact-button{
@@ -128,8 +190,15 @@ h1, h2{
     text-align: center;
     text-decoration: none;
     transition: 0.3s linear;
-     -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-     box-shadow: 4px 0 6px 0px rgba(0, 0, 0, 0.15);
+    -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    box-shadow: 4px 0 6px 0px rgba(0, 0, 0, 0.15);
+    width: 400px;
+    margin-bottom: 10px;
+}
+
+.contact-button:hover{
+    background-color: $font-gray;
+    color: white;
 }
 
 .map-container{
@@ -139,6 +208,7 @@ h1, h2{
     filter: progid:DXImageTransform.Microsoft.BasicImage(grayScale=1);
     position:relative;
     height:450px;
+    box-shadow: 0px 40px 40px rgba(37, 37, 37, 0.5);
 }
 
 footer{
@@ -164,7 +234,7 @@ footer{
 }
 
 .brand-logo {
-    width: 80px;
+    width: 150px;
     height: auto;
 }
 
@@ -184,7 +254,7 @@ footer a:hover {
 
 
 header{
-    height: 60vw;
+    height: 50vw;
     overflow: hidden;
 }
 
@@ -195,16 +265,24 @@ header{
     margin: 0;
     z-index: 9;
     width: 100%;
-    height: 60vw !important;
+    height: 50vw !important;
     .slides{
         width: 100%;
-        height: 60vw !important;
+        height: 50vw !important;
         overflow: hidden;
     }
     .slide{
-        height: 60vw !important;
+        height: 50vw !important;
         width: 100% !important;
         background-size: cover;
+        background-image: 
+        linear-gradient(
+            to bottom, 
+            rgba(255, 255, 255, 0.2) 40%, 
+            rgba(255, 255, 255, 0.5) 50%, 
+            rgba(255, 255, 255, 1) 80% 
+        ),
+        url('/static/app_bettirelax/img/headerpic1.jpg');
     }
     .button{
         margin: 0 20px;
@@ -247,11 +325,12 @@ header{
     .caption{
         height: 30vw;
         top: 30vw;
-        bottom: 0;
+        bottom: 15vw;
         position: absolute;
         width: 100%;
         margin: auto;
-        color: #fff;
+        color: $font-gray;
+        font-weight: 100;
         text-align: center;
         box-sizing: border-box;
         -moz-box-sizing: border-box;
@@ -295,9 +374,6 @@ header{
     }
   }
 
-.studio-gallery{
-    padding-top: 100px;
-}
 
 .custom-shape-divider-bottom-1737974290 {
     position: absolute;
@@ -333,7 +409,7 @@ header{
         height: 300px !important;       
     }
     @media (min-width: 576px) {
-        height: 600px !important;  
+        height: 800px !important;  
     }
 
     .slides{
@@ -342,26 +418,33 @@ header{
             height: 300px !important;       
         }
         @media (min-width: 576px) {
-            height: 600px !important;  
+            height: 800px !important;  
         }
         overflow: hidden;
     }
     .bgimage{
-        background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url('/static/app_bettirelax/img/service-header.jpg');
-        background-color: rgba(0, 0, 0, 0.5);
+        background-image: 
+        linear-gradient(
+            to bottom, 
+            rgba(255, 255, 255, 1) 00%, 
+            rgba(255, 255, 255, 0.6) 30%, 
+            rgba(255, 255, 255, 0.4) 80% 
+        ),
+        url('/static/app_bettirelax/img/service-header.jpg');
+
         @media (max-width: 576px) {
             height: 300px !important;       
         }
         @media (min-width: 576px) {
-            height: 600px !important;  
+            height: 800px !important;  
         }
         width: 100% !important;
         background-size: cover;
     }
     .caption{
-        height: 30vw;
+        height: 25vw;
         @media (max-width: 576px) {
-            top: 30vw;      
+            top: 35vw;      
         }
         @media (min-width: 576px) {
             top: 25vw;
@@ -371,7 +454,8 @@ header{
         position: absolute;
         width: 100%;
         margin: auto;
-        color: #fff;
+        color: $font-gray;
+        font-weight: 200;
         text-align: center;
         box-sizing: border-box;
         -moz-box-sizing: border-box;
@@ -431,6 +515,10 @@ header{
 
 .pricelist{
     text-align: center;
+    max-width: 500px !important;
+    h1{
+        padding: 0;
+    }
 }
 
 .accordition-faq .accordion-button {
@@ -463,6 +551,147 @@ header{
     .contact-button:hover{
         background-color: $font-pink;
     }
+}
+
+.bloglist{
+    position: relative;
+    @media (min-width: 576px){
+        max-width: 85%;
+    }
+    @media (min-width: 768px){
+        max-width: 65%;
+    }
+    @media (min-width: 992px){
+        max-width: 50%;
+    }
+    @media (min-width: 1400px) {
+        .bloglist{
+          max-width: 90%;
+        }
+    }
+    @media (min-width: 1600px) {
+        .bloglist{
+          max-width: 80%;
+        }
+      }
+  }
+
+.box-element-blog{
+    box-shadow:hsl(40, 20%, 50%) 0 0 50px;
+    background-color: #dee2e3;
+    color: #464747;
+    border-radius: 1px;
+    height: 600px;
+    padding-left: 0;
+    font-size: 14px;
+    justify-content: center;
+    border-radius: 20px;
+    margin-top:20px;
+    margin-left: auto;
+    margin-right: auto;
+    position:relative;
+}
+
+.blogpic-constraint{
+    overflow:hidden;
+    height: 300px;
+    margin-top: 3px;
+    border-radius: 20px;
+}
+
+.blogpic{
+    height: 320px;
+    display: flex;
+    overflow: hidden;
+    border-radius: 20px;
+    transition: transform 1s ease;
+  }
+  
+  .blogpic:hover{
+    transform: scale(1.1);
+    transform: rotate(2deg) scale(1.1);
+}
+
+.btn-elolvasom {
+    position: absolute !important;
+    right: 30px;
+    bottom: -30px;
+    border-radius: 12px;
+    -webkit-box-shadow: 0 0 16px rgba(0, 0, 0, 0.07);
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.07);
+    background: #fff;
+    padding: 17px 17px;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 500;
+    -webkit-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+    transition-property: all;
+    -webkit-transition-property: background, color;
+    transition-property: background, color;
+    display: inline-block;
+    font-size: 20px;
+    color: #000;
+    letter-spacing: 0.0001vw;
+    text-decoration: none;
+  }
+
+.btn-elolvasom::after {
+    background: url("https://img.icons8.com/ios/50/null/forward--v1.png") no-repeat center center;
+    margin-left: 0px;
+    display: inline-block;
+    content: '';
+    width: 23px;
+    height: 20px;
+    vertical-align: -3px;
+}
+  
+  .btn-elolvasom:hover{
+      color: #fff;
+      background: #691687;
+}
+
+.flower{
+    opacity: 0.5;
+    margin-top: 7vw;
+    padding-top: 3vw;
+    img{
+        height: 200px;
+        width: 100%;
+        object-fit: contain;
+
+    }
+}
+
+.hotstone{
+    opacity: 0.5;
+    padding-top: 3vw;
+    img{
+        height: 200px;
+        width: 100%;
+        object-fit: contain;
+    }
+}
+
+.wallet{
+    opacity: 0.5;
+    img{
+        height: 200px;
+        width: 100%;
+        object-fit: contain;
+    }
+}
+
+.service-section{
+    background-color: $button-pink;
+    padding-bottom: 5vw;
+}
+
+.contact-section{
+    background-color: $secondary;
+}
+
+.studio-gallery{
+    padding-bottom: 5vw;
 }
 // div {
 //     border: 1px solid rgb(0, 0, 0);
