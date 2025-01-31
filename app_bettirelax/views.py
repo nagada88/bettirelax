@@ -38,7 +38,7 @@ def faq(request):
 def bloglist(request):
     services = Service.objects.all()
     bloglist = BlogPost.objects.all()
-    contact = Contact.objects..first() 
+    contact = Contact.objects.first() 
     context = {'services': services, 'bloglist': bloglist, 'contact': contact}
 
     return render(request, 'bloglist.html', context)
