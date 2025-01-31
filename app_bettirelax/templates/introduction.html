@@ -103,23 +103,23 @@
     </div>
     
     <div class="container contact" id="cntct">
-        <div class="row">
+        <div class="row no-gutters">
             <div class="col-xl-6 col-12">
                 <h2>Kapcsolat</h2>
                 <p>
                     {{ contact.contact_text.html|safe }}
                 </p>
                 <p>
-                <center><a href={{ contact.facebook_messenger }} target="_blank" class="contact-button"><i class="fab fa-facebook-messenger"></i> &nbsp facebook messenger </a></center>
+                <a href={{ contact.facebook_messenger }} target="_blank" class="contact-button"><i class="fab fa-facebook-messenger"></i> &nbsp facebook messenger </a>
                 </p>
                 <p>
-                <center><a href="mailto:{{ contact.email_address }}" target="_blank" class="contact-button"><i class="fa fa-envelope"></i>&nbsp {{ contact.email_address }} </a></center>
+                <a href="mailto:{{ contact.email_address }}" target="_blank" class="contact-button"><i class="fa fa-envelope"></i>&nbsp {{ contact.email_address }} </a>
                 </p>
                 <p>
-                <center><a href="tel:{{ contact.phone_number }}" target="_blank" class="contact-button"><i class="fa fa-phone"></i>&nbsp {{ contact.phone_number }} </a></center>
+                <a href="tel:{{ contact.phone_number }}" target="_blank" class="contact-button"><i class="fa fa-phone"></i>&nbsp {{ contact.phone_number }} </a>
                 </p>                        
                 <p>
-                <center><a href="#" target="_blank" class="contact-button"><i class="fa fa-calendar"></i>&nbsp időpontot foglalok </a></center>
+                <a href="#" target="_blank" class="contact-button"><i class="fa fa-calendar"></i>&nbsp időpontot foglalok </a>
                 </p>              
                 <br><br>
             </div>
@@ -128,13 +128,15 @@
                         <iframe 
                             src="{{ contact.address_link }}" 
                             width="100%"
-                            height="550px"
+                            height="450px"
                             allowfullscreen="" 
                             loading="lazy" 
                             referrerpolicy="no-referrer-when-downgrade">
                         </iframe>
+                    </div>
             </div>
         </div>
     </div>
 </section>
+
 {% endblock content %}

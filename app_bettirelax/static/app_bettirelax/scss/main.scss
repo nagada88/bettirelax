@@ -6,6 +6,9 @@ body{
 }
 
 
+html, body {
+    overflow-x: hidden;
+}
 
 h2, h1, h5{
     font-family: $font-family-menu;
@@ -226,8 +229,13 @@ h1, h2{
     transition: 0.3s linear;
     -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
     box-shadow: 4px 0 6px 0px rgba(0, 0, 0, 0.15);
-    width: 400px;
     margin-bottom: 10px;
+    @media (max-width: 576px) {
+        width: 300px;
+    }
+    @media (min-width: 576px) {
+        width: 400px;
+    }
 }
 
 .contact-button:hover{
@@ -242,6 +250,7 @@ h1, h2{
     filter: progid:DXImageTransform.Microsoft.BasicImage(grayScale=1);
     position:relative;
     height:450px;
+    max-width: 100%;
     box-shadow: 0px 40px 40px rgba(37, 37, 37, 0.5);
 }
 
@@ -727,6 +736,7 @@ header{
 .studio-gallery{
     padding-bottom: 5vw;
 }
+
 // div {
 //     border: 1px solid rgb(0, 0, 0);
-// }
+// } 
