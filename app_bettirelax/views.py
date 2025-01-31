@@ -45,8 +45,10 @@ def bloglist(request):
 
 def blogpost(request, slug):
     services = Service.objects.all()
+    blogpost = get_object_or_404(BlogPost, slug=slug)
+    print(blogpost)
     contact = Contact.objects.first() 
-    context = {'blogpost': blogpost, 'services': services, 'contact': contact}
+    context = {'blogpost': blogpost, 'services': services, 'contact': contact, 'blogpost': blogpost}
 
     return render(request, 'blogpost.html', context)
 
