@@ -316,8 +316,17 @@ footer a:hover {
 
 
 header{
-    height: 50vw;
+
     overflow: hidden;
+
+    @media (max-width: 576px) {
+        padding-top: 100px;   
+        height: 80vw;       
+    }
+    @media (min-width: 576px) {
+        padding-top: 100px;
+        height: 50vw;             
+    }
 }
 
 #slideshow {
@@ -327,14 +336,29 @@ header{
     margin: 0;
     z-index: 9;
     width: 100%;
-    height: 50vw !important;
+    @media (max-width: 576px) {
+        height: 80vw;       
+    }
+    @media (min-width: 576px) {
+        height: 50vw;             
+    }
     .slides{
         width: 100%;
-        height: 50vw !important;
+        @media (max-width: 576px) {
+            height: 80vw;       
+        }
+        @media (min-width: 576px) {
+            height: 50vw;             
+        }
         overflow: hidden;
     }
     .slide{
-        height: 50vw !important;
+        @media (max-width: 576px) {
+            height: 80vw;       
+        }
+        @media (min-width: 576px) {
+            height: 50vw;             
+        }
         width: 100% !important;
         background-size: cover;
         background-image: 
