@@ -33,19 +33,53 @@ h1, h2{
 
 .dropdown-menu {
     text-align: left;
+    border: none !important;
+    box-shadow: none !important; 
     .dropdown-item {
         color: $font-pink !important;
     }
 }
 
-.aboutme{
-    padding: 5vw 0;
-    overflow: hidden;
+.nav-item.dropdown .dropdown-toggle {
+    cursor: pointer;
+    font-size: 16px; /* Mérete igazodik a szöveghez */
+    margin-left: 5px; /* Kis távolság a szövegtől */
+}
 
+/* A dropdown menü pozíciója, hogy ne fedje a szöveget */
+.nav-item.dropdown {
+    position: relative; /* Fontos, hogy a menü a helyes pozícióhoz viszonyítson */
+}
+
+.nav-item .dropdown-menu {
+    position: absolute;
+    top: 100%; /* A menü közvetlenül a "szolgáltatások" alá kerül */
+    left: 0;
+    width: auto; /* Megakadályozza, hogy szélesen nyúljon */
+    min-width: 200px; /* Opcionálisan fixálhatod a szélességet */
+    z-index: 1000; /* Fölé helyezi más elemeknek */
+    display: none; /* Alapértelmezés szerint elrejtjük */
+    background-color: white; /* Tisztább háttér */
+}
+
+/* Ha a menü aktív, akkor jelenjen meg */
+.nav-item .dropdown-menu.show {
+    display: block;
+}
+
+/* A hover effektek finomhangolása */
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+.aboutme{
+    overflow: hidden;
     @media (max-width: 576px) {
+        padding: 20vw 0;
     }
     @media (min-width: 576px) {
         height: 1000px;
+        padding: 0vw 0;
     }
     img{
         width: 100%;

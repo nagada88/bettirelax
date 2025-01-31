@@ -40,12 +40,12 @@
     </div>
 </div>
 
-<section class="service-section">
+<section class="service-section" id="services">
     <div class="container flower">
         <img  src={% static 'app_bettirelax/img/flower.png' %} alt="flower">
     </div>
 
-    <div class="container services" id="services">
+    <div class="container services">
         <h2>Masszázsok</h2>
             {% for service in services %}
                 {% if forloop.counter0|divisibleby:3 or forloop.first %}
@@ -62,10 +62,7 @@
                             </div>
                         </div>
                     {% if forloop.counter|divisibleby:3 or forloop.last %}
-                </div>
-                <div class="row" style="height: 50px">
-
-                </div>  
+                </div> 
                 {% endif %}
             {% endfor %}
     </div>   
