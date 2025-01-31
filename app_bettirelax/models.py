@@ -145,8 +145,9 @@ class ServicePrice(models.Model):
         verbose_name = 'Szolgáltatás ár'
         verbose_name_plural = 'Szolgáltatás árak'
 
-class BlogPost(models.Model):
+class BlogPost(ImageHandlerMixin, models.Model):
     main_image = models.ImageField(upload_to='app_bettirelax/img/photos/')
+    main_image_thumb = models.ImageField(upload_to='app_bettirelax/img/thumbs/', blank=True, null=True, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user = models.CharField(max_length=200, default="Betti")
@@ -154,6 +155,7 @@ class BlogPost(models.Model):
     extract = models.CharField(max_length=200)
     content = QuillField()
     slug = models.SlugField(max_length=200, unique=True, blank=True, null=True, editable=False)
+    IMAGE_FIELDS = ['main_image']
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -170,9 +172,11 @@ class BlogPost(models.Model):
         verbose_name = 'Blogposzt'
         verbose_name_plural = 'Blogposztok'
 
-class AboutMe(models.Model):
+class AboutMe(ImageHandlerMixin, models.Model):
     photo = models.ImageField(upload_to='app_bettirelax/img/photos/', verbose_name="bemutatkozó kép")
+    photo_thumb = models.ImageField(upload_to='app_bettirelax/img/thumbs/', blank=True, null=True, editable=False)
     aboutme = QuillField(verbose_name="bemutatkozó szöveg")
+    IMAGE_FIELDS = ['photo']
 
     def __str__(self):
         return "Rólam"

@@ -4,9 +4,6 @@ from .models import *
 # Create your views here.
 
 def introduction(request):
-    # pictures = Photos.objects.filter(category__name="kutyafotózás")
-    # studiopictures = Photos.objects.filter(category__name="studio")
-    # reviews = load_more_reviews(request)
     aboutme = AboutMe.objects.get(id=1)
     contact = Contact.objects.get(id=1)
     services = Service.objects.all()
@@ -31,9 +28,10 @@ def pricelist(request):
 
 def faq(request):
     faqs = Faq.objects.all()
+    aboutme = AboutMe.objects.get(id=1)
     services = Service.objects.all()
     contact = Contact.objects.get(id=1)
-    context = {'faqs': faqs, 'services': services, 'contact': contact}
+    context = {'faqs': faqs, 'services': services, 'contact': contact, 'aboutme': aboutme}
 
     return render(request, 'faq.html', context)
 
