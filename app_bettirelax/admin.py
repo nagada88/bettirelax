@@ -23,9 +23,12 @@ class ServiceAdmin(admin.ModelAdmin):
 class AboutMeAdmin(InstanceCounterMixin1, admin.ModelAdmin):
     model = AboutMe
 
+class ContactAdmin(InstanceCounterMixin1, admin.ModelAdmin):
+    model = Contact
+
 # Register your models here.
 admin.site.register(BlogPost)
 admin.site.register(AboutMe, AboutMeAdmin)
 admin.site.register(Faq)
 admin.site.register(Review)
-admin.site.register(Contact)
+admin.site.register(Contact, ContactAdmin)
