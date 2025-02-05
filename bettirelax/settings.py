@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'app_bettirelax',
     'django.contrib.humanize',
     'django_quill',
+    'cookie_consent',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +57,10 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'bettirelax.urls'
 
+# Szükséges beállítások
+COOKIE_CONSENT_NAME = 'cookie_consent'  # Sütinek a neve
+COOKIE_CONSENT_MAX_AGE = 365 * 24 * 60 * 60  # 1 évig érvényes (másodpercben)
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -67,6 +72,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                "app_bettirelax.views.cookie_banner_context",
             ],
         },
     },

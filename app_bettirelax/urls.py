@@ -15,10 +15,14 @@ from django.contrib.sitemaps.views import sitemap
 urlpatterns = [
     # path('blog/<slug:slug>/', BlogPostDetailView.as_view(), name='blog_detail'),    
     path('', views.introduction, name='introduction'),
-    path('introduction/', views.introduction, name='introduction'),
-    path('service/<slug:slug>/', views.service, name='service'),
+    path('masszas-szigetszentmikloson/', views.introduction, name='introduction'),
+    path('masszazs-szigetszentmiklos/<slug:slug>/', views.service, name='service'),
     path('blogpost/<slug:slug>/', views.blogpost, name='blogpost'),
     path('pricelist/', views.pricelist, name='pricelist'),
     path('bloglist/', views.bloglist, name='bloglist'),
     path('faq/', views.faq, name='faq'),
+    path("cookie-status/", views.cookie_status, name="cookie_status"),
+    path("cookie-accept/<str:group_name>/", views.accept_cookie_group, name="accept_cookie_group"),
+    path("cookie-decline/<str:group_name>/", views.decline_cookie_group, name="decline_cookie_group"),
+    path("status/", views.cookie_status, name="cookie_status"), 
     ]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

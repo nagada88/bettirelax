@@ -852,6 +852,132 @@ header{
     padding-bottom: 5vw;
 }
 
+/* Cookie banner alapbeállítás */
+.cookie-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 15px;
+    text-align: center;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+// Színek
+$primary-color: #007bff;
+$secondary-color: #ff4d4d;
+$background-color: rgba(0, 0, 0, 0.85);
+$text-color: #ffffff;
+
+// Cookie banner alapbeállítás
+.cookie-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: $background-color;
+    color: $text-color;
+    padding: 15px 20px;
+    text-align: center;
+    z-index: 1000;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.5s ease-out;
+
+    p {
+        flex: 1 1 100%;
+        margin: 0;
+        font-size: 16px;
+        text-align: center;
+    }
+
+    // Gombok konténer
+    .cookie-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    // Gombok stílusa
+    button {
+        padding: 12px 20px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 5px;
+        transition: background 0.3s ease-in-out;
+        text-transform: uppercase;
+    }
+
+    .cc-cookie-accept {
+        background: $button-pink;
+        color: white;
+
+        &:hover {
+            background: darken($primary-color, 10%);
+        }
+    }
+
+    .cc-cookie-decline {
+        background: $font-gray;
+        color: white;
+
+        &:hover {
+            background: darken($secondary-color, 10%);
+        }
+    }
+
+    .cc-cookie-settings {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+    }
+}
+
+// Animáció a banner megjelenésére
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+// Reszponzív beállítások
+@media (max-width: 768px) {
+    .cookie-bar {
+        flex-direction: column;
+        padding: 15px;
+
+        p {
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+        }
+    }
+}
+
 // div {
 //     border: 1px solid rgb(0, 0, 0);
 // } 

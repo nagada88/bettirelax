@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load cookie_consent_tags %}
 
 
 <html data-wf-page="5e966657bfb4cdde5c3e404a" data-wf-site="5e966657bfb4cd1e103e404b" lang="en">
@@ -12,49 +13,36 @@
 
 <!-- Open Graph Meta Tags -->
 <meta property="og:url" content="https://bettirelax.hu" />
-<meta property="og:title" content="bettirelax - pihentető masszázs Szigetszentmiklóson" />
-<meta property="og:image" content="https://www.bettirelax.hu/static/app_bettirelax/img/*.jpg" />
-<meta property="og:image:alt" content="Rózsaszínű masszázsszalon" />
+<meta property="og:title" content="Masszázs Szigetszentmiklóson - Relaxáló és Gyógymasszázs | Bettirelax" />
+<meta property="og:image" content="https://www.bettirelax.hu/static/app_bettirelax/img/studio4.jpg" />
+<meta property="og:image:alt" content="Relaxáló masszázsszalon Szigetszentmiklóson – Bettirelax" />
 
 <!-- Twitter Meta Tags -->
-<meta name="twitter:image" content="https://www.bettirelax.hu/static/app_bettirelax/img/*.jpg" />
-<meta property="twitter:image:alt" content="Rózsaszínű masszázsszalon" />
+<meta name="twitter:image" content="https://www.bettirelax.hu/static/app_bettirelax/img/studio4.jpg" />
+<meta property="twitter:image:alt" content="Relaxáló masszázsszalon Szigetszentmiklóson – Bettirelax" />
 <meta name="twitter:card" content="rozsaszin_masszazsszalon" />
 
-<meta name="keywords" content="masszázs, szigetszentmiklós, babamasszázs">
+<meta name="keywords" content="masszázs, szigetszentmiklós, babamasszázs, manager masszázs, wellness, nyugalom, bettirelax, betti">
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-<!-- <script src={% static 'app_bettirelax/js/lightbox-plus-jquery.min.js' %}></script>
-<script src={% static 'app_bettirelax/js/jquery.min.js' %}></script>
-<script src={% static 'app_bettirelax/js/owl.carousel.min.js' %}></script> -->
 <script src="https://unpkg.com/htmx.org"></script>
 
 <!-- own css -->
 <link rel="stylesheet" href={% static 'app_bettirelax/css/main.css' %}>
-<!-- <link rel="stylesheet" href={% static 'app_bettirelax/css/lightbox.css' %}>
-<link rel="stylesheet" href={% static 'app_bettirelax/css/owl.carousel.min.css' %}>
-<link rel="stylesheet" href={% static 'app_bettirelax/css/owl.theme.default.min.css' %}> -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 
-<!-- Google tag (gtag.js) -->
-<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-JKPKQPY09B"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-JKPKQPY09B');
-</script> -->
-
-
+{% url "cookie_consent_cookie_group_list" as url_cookies %}
+{% static "cookie_consent/cookiebar.module.js" as cookiebar_src %}
+{% url 'cookie_consent_status' as status_url %}
 
 <title>
 {{title}}
 </title>
 
-<meta name="description" property="og:description" content="bettirelax - masszázs Szigetszentmiklóson">
-<meta name="author" content="Nagy Ádám">
-<link rel="icon" href={% static 'app_bettirelax/img/logo-color.png' %}>
+<meta name="description" property="og:description" content="Frissítő és gyógymasszázs Szigetszentmiklóson! Lazíts, töltődj fel profi masszőrünk kezei alatt. Foglalj időpontot még ma!" />
+<meta name="author" content="Tankó Bettina">
+<link rel="icon" href={% static 'app_bettirelax/img/logo.png' %}>
 
 </head>
 
@@ -64,7 +52,7 @@
     <div class="container">
         <!-- Logo balra -->
         <a class="navbar-brand navbar-expand menubrand me-auto" href="{% url 'introduction' %}">
-            <img src="{% static 'app_bettirelax/img/logo-narrow.png' %}" class="brand-logo brandicon" alt="bettirelax brand logo">
+            <img src="{% static 'app_bettirelax/img/logo-narrow.png' %}" class="brand-logo brandicon" alt="Bettirelax Brand Logo">
         </a>
   
         <!-- Hamburger menu -->
@@ -121,7 +109,7 @@
       <!-- Márka logó -->
       <div class="brand-logo-container text-center position-absolute top-0 start-50 translate-middle">
           <div class="brand-logo-bg d-inline-block">
-              <img src={% static 'app_bettirelax/img/logo.png' %} alt="Bettirelax" class="logo">
+              <img src={% static 'app_bettirelax/img/logo.png' %} alt="Bettirelax Brand Logo" class="logo">
           </div>
       </div>
 
@@ -158,11 +146,18 @@
   </div>
 </footer>
 
-<!-- <div class="cookies-eu-banner hidden">
-  Az oldal viselkedésalapú cookie-kat használhat. Amennyiben elfogadod, kattints az elfogadom gombra. <a href="{% static 'app_bettirelax/cookie/sutik.pdf' %}" download="cookies">adatvédelmi irányelvek</a> 
-  <button>ELFOGADOM</button>
-</div> -->
+<div id="cookie-banner" class="cookie-bar" style="display: none;">
+    <p>Az oldal viselkedésalapú cookie-kat használhat. Amennyiben elfogadod, kattints az elfogadom gombra.</p>
+    <div class="cookie-buttons">
+        {% for group in cookie_groups %}
+            <button class="cc-cookie-accept" data-cookie-group="{{ group.varname }}">Elfogadom</button>
+            <button class="cc-cookie-decline" data-cookie-group="{{ group.varname }}">Elutasítom</button>
+        {% endfor %}
+        <button class="cc-cookie-settings"><a href={% static 'app_bettirelax/img/cookie_tajekoztato.pdf' %} class="button" download="cookies">Adatvédelmi irányelvek</a></button>
+    </div>
+</div>
 
+<script src="{% static 'app_bettirelax/js/cookie_handler.js' %}" defer></script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     var dropdownToggle = document.getElementById("servicesDropdown");
@@ -197,4 +192,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 </script>
+
+</body>
 </html>

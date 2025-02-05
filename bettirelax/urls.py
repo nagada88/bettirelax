@@ -18,6 +18,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('cookies/', include('cookie_consent.urls')),  # Cookie consent URL-ek
     path('', include('app_bettirelax.urls'))
 ]
 
