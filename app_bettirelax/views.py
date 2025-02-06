@@ -158,7 +158,8 @@ def introduction(request):
 
 def service(request, slug):
     service = get_object_or_404(Service, slug=slug)
-    context = {'service': service, 'title': service.service_name + "Szigetszentmiklóson"}
+    services = Service.objects.prefetch_related('prices').all() 
+    context = {'services': services, 'service': service, 'title': service.service_name + "Szigetszentmiklóson"}
 
     return render(request, 'service.html', context)
 
