@@ -371,7 +371,7 @@ header{
             rgba(255, 255, 255, 0.5) 50%, 
             rgba(255, 255, 255, 1) 80% 
         ),
-        url('/static/app_bettirelax/img/headerpic1.jpg');
+        url('/static/app_bettirelax/img/headerpic1.webp');
     }
     .button{
         margin: 0 20px;
@@ -519,7 +519,7 @@ header{
             rgba(255, 255, 255, 0.6) 30%, 
             rgba(255, 255, 255, 0.4) 80% 
         ),
-        url('/static/app_bettirelax/img/service-header.jpg');
+        url('/static/app_bettirelax/img/service-header.webp');
 
         @media (max-width: 576px) {
             height: 300px !important;       

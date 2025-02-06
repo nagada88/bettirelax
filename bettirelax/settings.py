@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django_quill',
     'cookie_consent',
+    'django.contrib.sitemaps',
 ]
 
 MIDDLEWARE = [
@@ -73,6 +74,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 "app_bettirelax.views.cookie_banner_context",
+                "app_bettirelax.views.contact_context",
             ],
         },
     },

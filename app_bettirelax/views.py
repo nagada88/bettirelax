@@ -5,6 +5,12 @@ from cookie_consent.util import get_cookie_value_from_request
 from cookie_consent.models import CookieGroup
 from django.shortcuts import redirect
 
+def contact_context(request):
+    """
+    Globális context processor, amely a kapcsolati adatokat elküldi az összes view-ba.
+    """
+    return { 'contact': Contact.objects.first()}
+
 def cookie_banner_context(request):
     """
     Globális context processor, amely az összes cookie groupot elküldi a template-be.
@@ -39,11 +45,13 @@ def cookie_status(request):
         if group.varname == "analytics" and is_accepted:
             print(f"✅ Süti {cookie_name} engedélyezett, betöltjük a Google Tag Managert!")  # Debug log
             cookie_status[group.varname]["scripts"].append(
-                '<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASURE_ID"></script>'
-                '<script>window.dataLayer = window.dataLayer || []; '
-                'function gtag(){dataLayer.push(arguments);} '
-                'gtag("js", new Date()); '
-                'gtag("config", "GA_MEASURE_ID");</script>'
+                '<script async src="https://www.googletagmanager.com/gtag/js?id=G-YPZ37N9EBB"></script>'
+                '<script>'
+                '  window.dataLayer = window.dataLayer || [];'
+                '  function gtag(){dataLayer.push(arguments);}'
+                '  gtag("js", new Date());'
+                '  gtag("config", "G-YPZ37N9EBB");'
+                '</script>'
             )
 
     print(f"📩 Visszaküldött JSON: {cookie_status}")  # 🔹 Debug log
@@ -85,11 +93,13 @@ def accept_cookie_group(request, group_name):
 
     if group_name == "analytics":
         response_data["scripts"].append(
-            '<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASURE_ID"></script>'
-            '<script>window.dataLayer = window.dataLayer || []; '
-            'function gtag(){dataLayer.push(arguments);} '
-            'gtag("js", new Date()); '
-            'gtag("config", "GA_MEASURE_ID");</script>'
+                '<script async src="https://www.googletagmanager.com/gtag/js?id=G-YPZ37N9EBB"></script>'
+                '<script>'
+                '  window.dataLayer = window.dataLayer || [];'
+                '  function gtag(){dataLayer.push(arguments);}'
+                '  gtag("js", new Date());'
+                '  gtag("config", "G-YPZ37N9EBB");'
+                '</script>'
         )
         response = JsonResponse(response_data)
 
@@ -140,24 +150,21 @@ def decline_cookie_group(request, group_name):
 
 def introduction(request):
     aboutme = AboutMe.objects.first() 
-    contact = Contact.objects.first() 
     services = Service.objects.all()
-    context={'aboutme': aboutme, 'services': services, 'contact': contact}
+    title = "Masszázs Szigetszentmiklóson - Svédmasszázs, Aromaterápiás és Babamasszázs | Bettirelax"
+    context = {'aboutme': aboutme, 'services': services, 'title': title}
 
     return render(request, 'introduction.html', context)
 
 def service(request, slug):
     service = get_object_or_404(Service, slug=slug)
-    services = Service.objects.all()
-    contact = Contact.objects.first() 
-    context = {'service': service, 'services': services, 'contact': contact}
+    context = {'service': service, 'title': service.service_name + "Szigetszentmiklóson"}
 
     return render(request, 'service.html', context)
 
 def pricelist(request):
     services = Service.objects.prefetch_related('prices').all()  
-    contact = Contact.objects.first() 
-    context = {'services': services, 'contact': contact}
+    context = {'services': services, 'title': 'Masszázs Árak Szigetszentmiklóson – Frissítő és Relaxáló Masszázs'}
                
     return render(request, 'pricelist.html', context)
 
@@ -165,24 +172,22 @@ def faq(request):
     faqs = Faq.objects.all()
     aboutme = AboutMe.objects.first() 
     services = Service.objects.all()
-    contact = Contact.objects.first() 
-    context = {'faqs': faqs, 'services': services, 'contact': contact, 'aboutme': aboutme}
+    context = {'faqs': faqs, 'services': services, 'aboutme': aboutme, 'title': "Masszázs GYIK - Minden, Amit Tudni Érdemes a Kezelésekről"}
 
     return render(request, 'faq.html', context)
 
 def bloglist(request):
     services = Service.objects.all()
     bloglist = BlogPost.objects.all()
-    contact = Contact.objects.first() 
-    context = {'services': services, 'bloglist': bloglist, 'contact': contact}
+    context = {'services': services, 'bloglist': bloglist, 'title': 'Blogposztok: Minden Ami Masszázs, Érdekességek, Esetek'}
 
     return render(request, 'bloglist.html', context)
 
 def blogpost(request, slug):
     services = Service.objects.all()
     blogpost = get_object_or_404(BlogPost, slug=slug)
-    contact = Contact.objects.first() 
-    context = {'blogpost': blogpost, 'services': services, 'contact': contact, 'blogpost': blogpost}
+    title = blogpost.title
+    context = {'blogpost': blogpost, 'services': services, 'blogpost': blogpost, 'title': title}
 
     return render(request, 'blogpost.html', context)
 

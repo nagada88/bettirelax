@@ -14,11 +14,11 @@
 <!-- Open Graph Meta Tags -->
 <meta property="og:url" content="https://bettirelax.hu" />
 <meta property="og:title" content="Masszázs Szigetszentmiklóson - Relaxáló és Gyógymasszázs | Bettirelax" />
-<meta property="og:image" content="https://www.bettirelax.hu/static/app_bettirelax/img/studio4.jpg" />
+<meta property="og:image" content="https://www.bettirelax.hu/static/app_bettirelax/img/studio4.webp" />
 <meta property="og:image:alt" content="Relaxáló masszázsszalon Szigetszentmiklóson – Bettirelax" />
 
 <!-- Twitter Meta Tags -->
-<meta name="twitter:image" content="https://www.bettirelax.hu/static/app_bettirelax/img/studio4.jpg" />
+<meta name="twitter:image" content="https://www.bettirelax.hu/static/app_bettirelax/img/studio4.webp" />
 <meta property="twitter:image:alt" content="Relaxáló masszázsszalon Szigetszentmiklóson – Bettirelax" />
 <meta name="twitter:card" content="rozsaszin_masszazsszalon" />
 
@@ -43,6 +43,24 @@
 <meta name="description" property="og:description" content="Frissítő és gyógymasszázs Szigetszentmiklóson! Lazíts, töltődj fel profi masszőrünk kezei alatt. Foglalj időpontot még ma!" />
 <meta name="author" content="Tankó Bettina">
 <link rel="icon" href={% static 'app_bettirelax/img/logo.png' %}>
+
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Bettirelax Masszázs Szigetszentmiklóson",
+      "image": "https://www.bettirelax.hu/static/app_bettirelax/img/studio4.webp",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "{{ contact.adress_street }}",
+        "addressLocality": "{{ contact.adress_city }}",
+        "addressRegion": "{{ contact.adress_county }}",
+        "postalCode": "{{ contact.adress_postal }}",
+        "addressCountry": "{{ contact.adress_country }}"
+      },
+      "telephone": "{{ contact.phone_number }}",
+    }
+    </script>
 
 </head>
 
@@ -119,7 +137,7 @@
               <h5>Kapcsolat</h5>
               <p><i class="fa fa-phone"></i> <a href="tel:{{ contact.phone_number }}">&nbsp &nbsp {{ contact.phone_number }}</a></p>
               <p><i class="fa fa-envelope"></i> <a href="mailto:{{ contact.email_address }}">&nbsp &nbsp {{ contact.email_address }}</a></p>
-              <p><i class="fa fa-map-marker"></i>&nbsp &nbsp {{ contact.address }}</p>
+              <p><i class="fa fa-map-marker"></i>&nbsp &nbsp {{ contact.address_postal }}, {{ contact.address_city }} {{ contact.address_street }}</p>
           </div>
 
           <!-- Nyitvatartás -->

@@ -4,14 +4,13 @@ from . import views
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib.sitemaps.views import sitemap
-# from .sitemaps import StaticSitemap, BlogSitemap 
-# from .views import BlogPostDetailView
+from .sitemaps import StaticViewSitemap, ServiceSitemap, BlogSitemap
 
-# sitemaps = {
-#     'static':StaticSitemap, #add StaticSitemap to the dictionary
-#     'blog':BlogSitemap #add StaticSitemap to the dictionary
-# }
-
+sitemaps = {
+    'static': StaticViewSitemap,
+    'services': ServiceSitemap,
+    'blog': BlogSitemap,
+}
 urlpatterns = [
     # path('blog/<slug:slug>/', BlogPostDetailView.as_view(), name='blog_detail'),    
     path('', views.introduction, name='introduction'),
@@ -24,5 +23,6 @@ urlpatterns = [
     path("cookie-status/", views.cookie_status, name="cookie_status"),
     path("cookie-accept/<str:group_name>/", views.accept_cookie_group, name="accept_cookie_group"),
     path("cookie-decline/<str:group_name>/", views.decline_cookie_group, name="decline_cookie_group"),
-    path("status/", views.cookie_status, name="cookie_status"), 
+    path("status/", views.cookie_status, name="cookie_status"),
+    path("sitemap.xml", sitemap, {'sitemaps': sitemaps}, name="sitemap"),
     ]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

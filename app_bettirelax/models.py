@@ -128,7 +128,10 @@ class Service(ImageHandlerMixin, models.Model):
     
     def __str__(self):
         return self.service_name
-
+    
+    def get_absolute_url(self):
+        return reverse('service', kwargs={'slug': self.slug})  # Cseréld ki a megfelelő URL nevét
+    
     class Meta:
         verbose_name = 'Szolgáltatás'
         verbose_name_plural = 'Szolgáltatások'
@@ -214,7 +217,11 @@ class Faq(models.Model):
 
 class Contact(models.Model):
     email_address = models.CharField(max_length=50, default="", verbose_name="emailcím")
-    address = models.CharField(max_length=50, default="", verbose_name="cím")
+    address_city = models.CharField(max_length=50, default="", verbose_name="cím: város")
+    address_street = models.CharField(max_length=50, default="", verbose_name="cím: utca, házszám")
+    address_postal = models.CharField(max_length=50, default="", verbose_name="cím: irányítószám")
+    address_county = models.CharField(max_length=50, default="", verbose_name="cím: megye")
+    address_country = models.CharField(max_length=50, default="", verbose_name="cím: ország")
     address_link =models.TextField(max_length=500, default="", verbose_name="térkép link")
     facebook = models.CharField(max_length=150, default="", verbose_name="facebook")
     facebook_messenger = models.CharField(max_length=150, default="", verbose_name="facebook messenger")
