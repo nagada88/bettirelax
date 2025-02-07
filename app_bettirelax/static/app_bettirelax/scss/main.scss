@@ -335,7 +335,6 @@ header{
 #slideshow {
     position: relative;
     padding: 0;
-    background: #232323;
     margin: 0;
     z-index: 9;
     width: 100%;
@@ -367,15 +366,15 @@ header{
         background-image: 
         linear-gradient(
             to bottom, 
-            rgba(255, 255, 255, 0.2) 40%, 
-            rgba(255, 255, 255, 0.5) 50%, 
-            rgba(255, 255, 255, 1) 80% 
+            rgba(255, 255, 255, 0.0) 30%, 
+            rgba(255, 255, 255, 0.5) 40%, 
+            rgba(255, 255, 255, 1) 70% 
         ),
         url('/static/app_bettirelax/img/headerpic1.webp');
     h2{
-        font-weight: 100;
+        font-weight: 200;
         @media (max-width: 576px){
-            font-size: 1rem;
+            font-size: 0.8rem;
             padding-top: 10px;
         }
         @media (min-width: 576px){
@@ -438,12 +437,19 @@ header{
         position: absolute;
         width: 100%;
         margin: auto;
-        color: $font-gray;
         font-weight: 100;
         text-align: center;
         box-sizing: border-box;
         -moz-box-sizing: border-box;
         z-index: 100;
+        h1,{
+            color: white !important; /* Fehér betű alapból */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Fekete árnyék a jobb olvashatóság érdekében */
+        }
+        h2 {
+            color: $font-gray;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.1); /* Fekete árnyék a jobb olvashatóság érdekében */
+        }
       }
     .title::after {
         content: '';
@@ -451,8 +457,7 @@ header{
 
         height: 1px;
         margin: 10px auto;
-        background: #e7bd70;
-        background: linear-gradient(90deg,rgba(231,189,112,0) 0,#e7bd70 50%,rgba(231,189,112,0) 100%);
+        background: linear-gradient(90deg,rgba(231,189,112,0) 0,$font-gray 50%,rgba(231,189,112,0) 100%);
         @media (max-width: 576px) {
             width: 200px;         
         }
@@ -510,7 +515,6 @@ header{
 #slideshow1 {
     position: relative;
     padding: 0;
-    background: #232323;
     margin: 0;
     z-index: 9;
     width: 100%;
@@ -550,41 +554,7 @@ header{
         width: 100% !important;
         background-size: cover;
     }
-    .caption{
-        height: 25vw;
-        @media (max-width: 576px) {
-            top: 35vw;      
-        }
-        @media (min-width: 576px) {
-            top: 25vw;
-        }
 
-        bottom: 0;
-        position: absolute;
-        width: 100%;
-        margin: auto;
-        color: $font-gray;
-        font-weight: 200;
-        text-align: center;
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        z-index: 100;
-      }
-    .title::after {
-        content: '';
-        display: block;
-
-        height: 1px;
-        margin: 10px auto;
-        background: #e7bd70;
-        background: linear-gradient(90deg,rgba(231,189,112,0) 0,#e7bd70 50%,rgba(231,189,112,0) 100%);
-        @media (max-width: 576px) {
-            width: 200px;         
-        }
-        @media (min-width: 576px) {
-            width: 360px;        
-        }
-    }
     .container{
         width: 80%;
         position: relative;

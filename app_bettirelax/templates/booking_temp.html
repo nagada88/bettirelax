@@ -1,0 +1,16 @@
+{% extends 'main.html'%}
+{% load static %}       
+{% block content %}
+
+<div class="containter" style="padding-top: 100px; margin: 50px 0; padding-bottom:150px;">
+    <div class="row">
+        <div class="col">
+            <center><img src="{% static 'app_bettirelax/img/work-in-progress.webp' %}" style="max-width: 70%;"></center><br>
+            <center><p>Hamarosan elindul az iőpontfoglaló rendszer</p></center>
+            <h2 style="font-weight: 100;">Addig is az <a href="{% url 'introduction' %}#cntct" style="color:brown; ">elérhetőségeimen</a> tudsz időpontot foglalni! <br> Várlak szeretettel!</h2>
+        </div>
+    </div>
+</div>
+    
+
+{% endblock content %}

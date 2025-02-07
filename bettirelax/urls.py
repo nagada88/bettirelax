@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from app_bettirelax.admin import booking_admin  # Az új admin példány importálása
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('booking_admin/', booking_admin.urls),  # Új admin felület a foglalási rendszerhez
     path('cookies/', include('cookie_consent.urls')),  # Cookie consent URL-ek
     path('', include('app_bettirelax.urls'))
 ]

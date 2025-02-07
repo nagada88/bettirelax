@@ -235,20 +235,52 @@ class Contact(models.Model):
     def __str__(self):
         return "Kapcsolat"
     
-# class Availability(models.Model):
-#     AVAILABLE = 'green'
-#     PARTIALLY_BOOKED = 'yellow'
-#     UNAVAILABLE = 'red'
-    
-#     STATUS_CHOICES = [
-#         (AVAILABLE, 'Available'),
-#         (PARTIALLY_BOOKED, 'Partially Booked'),
-#         (UNAVAILABLE, 'Unavailable'),
-#     ]
+class OpeningHours(models.Model):
+    DAY_CHOICES = [
+        (0, 'Hétfő'),
+        (1, 'Kedd'),
+        (2, 'Szerda'),
+        (3, 'Csütörtök'),
+        (4, 'Péntek'),
+        (5, 'Szombat'),
+        (6, 'Vasárnap'),
+    ]
 
-#     date = models.DateField(unique=True)  # Egyedi dátum
-#     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=AVAILABLE)
-#     notes = models.TextField(blank=True, null=True)  # Opcionális jegyzetek az admin számára
+    day_of_week = models.IntegerField(choices=DAY_CHOICES, verbose_name="Nap")
+    is_even_week = models.BooleanField(default=True, verbose_name="Páros hét?")  
+    start_time = models.TimeField(verbose_name="Nyitás")
+    end_time = models.TimeField(verbose_name="Zárás")
 
-#     def __str__(self):
-#         return f"{self.date} - {self.get_status_display()}"
+    def __str__(self):
+        week_type = "Páros hét" if self.is_even_week else "Páratlan hét"
+        return f"{self.get_day_of_week_display()} ({week_type}): {self.start_time} - {self.end_time}"
+
+    class Meta:
+        verbose_name = "Nyitvatartás"
+        verbose_name_plural = "Nyitvatartások"
+        unique_together = ('day_of_week', 'is_even_week', 'start_time', 'end_time')
+
+class SpecialOpeningHours(models.Model):
+    date = models.DateField(unique=True, verbose_name="Dátum")
+    start_time = models.TimeField(verbose_name="Nyitás")
+    end_time = models.TimeField(verbose_name="Zárás")
+
+    def __str__(self):
+        return f"{self.date}: {self.start_time} - {self.end_time}"
+
+    class Meta:
+        verbose_name = "Egyedi nyitvatartás"
+        verbose_name_plural = "Egyedi nyitvatartások"
+
+class BookingSettings(models.Model):
+    is_booking_enabled = models.BooleanField(default=True, verbose_name="Foglalási rendszer bekapcsolva?")
+    max_weeks_in_advance = models.PositiveIntegerField(default=4, verbose_name="Hány hétre előre lehet foglalni? (1-12)", choices=[(i, f"{i} hét") for i in range(1, 13)])
+    min_hours_before_booking = models.PositiveIntegerField(default=24, verbose_name="Legkésőbb mennyivel előre lehet foglalni? (órákban)")
+    auto_reject_time = models.PositiveIntegerField(default=12, verbose_name="Mennyi idő után utasítsuk el automatikusan? (órákban)")
+
+    def __str__(self):
+        return "Foglalási rendszer beállításai"
+
+    class Meta:
+        verbose_name = "Foglalási beállítások"
+        verbose_name_plural = "Foglalási beállítások"

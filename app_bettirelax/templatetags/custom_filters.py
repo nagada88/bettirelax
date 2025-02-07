@@ -9,3 +9,11 @@ def thousand_separator(value):
         return "{:,.0f}".format(value).replace(",", ".")  # Ezres elválasztás ponttal
     except (ValueError, TypeError):
         return value  # Ha nem szám, akkor visszaadja az eredeti értéket
+    
+
+@register.filter
+def get_item(obj, key):
+    """Ha obj dictionary, akkor visszaadja a kulcs értékét, különben üres string"""
+    if isinstance(obj, dict):
+        return obj.get(key, "")
+    return ""
