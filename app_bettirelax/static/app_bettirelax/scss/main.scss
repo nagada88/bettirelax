@@ -516,22 +516,34 @@ header{
     position: relative;
     padding: 0;
     margin: 0;
+    margin-top: 100px;
     z-index: 9;
-    width: 100%;
     @media (max-width: 576px) {
-        height: 300px !important;       
+        height: 170px !important;       
     }
     @media (min-width: 576px) {
-        height: 800px !important;  
-    }
-
-    .slides{
+        height: 400px !important;  
         width: 100%;
+    }
+    @media (min-width: 1200px) {
+        height: 550px !important;  
+    }
+    @media (min-width: 1800px) {
+        height: 700px !important;  
+    }
+    .slides{
         @media (max-width: 576px) {
-            height: 300px !important;       
+            height: 170px !important;       
         }
         @media (min-width: 576px) {
-            height: 800px !important;  
+            height: 400px !important;  
+            width: 100%;
+        }
+        @media (min-width: 1200px) {
+            height: 550px !important;  
+        }
+        @media (min-width: 1800px) {
+            height: 700px !important;  
         }
         overflow: hidden;
     }
@@ -541,18 +553,26 @@ header{
             to bottom, 
             rgba(255, 255, 255, 1) 00%, 
             rgba(255, 255, 255, 0.6) 30%, 
-            rgba(255, 255, 255, 0.4) 80% 
+            rgba(255, 255, 255, 0.6) 80% 
         ),
         url('/static/app_bettirelax/img/service-header.webp');
 
         @media (max-width: 576px) {
-            height: 300px !important;       
+            height: 170px !important;
+            width: 120%;     
         }
         @media (min-width: 576px) {
-            height: 800px !important;  
+            height: 400px !important;
+            width: 100%;
         }
-        width: 100% !important;
-        background-size: cover;
+        @media (min-width: 1200px) {
+            height: 550px !important;  
+        }
+        @media (min-width: 1800px) {
+            height: 700px !important;  
+        }
+        background-size:cover;
+        
     }
 
     .container{
