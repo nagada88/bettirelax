@@ -498,6 +498,7 @@ header{
     overflow: hidden;
     line-height: 0;
     transform: rotate(180deg);
+    margin-bottom: -2px; /* Vagy próbáld kisebb értékkel */
 }
 
 .custom-shape-divider-bottom-1737974290 svg {
