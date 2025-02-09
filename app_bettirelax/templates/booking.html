@@ -1,0 +1,125 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+<div class="container" style="height: 200px;"></div>
+<div class="container mt-4">
+    <h1><center>Elérhetőség - {{ year }}. {{ month_name }}</center></h1>
+    <div class="row">
+        <div class="col-md-6 col-12">
+            <div class="d-flex justify-content-between mb-3">
+                {% if year > today.year or year == today.year and month > today.month %}
+                    <a href="?month={{ prev_month }}&year={{ prev_year }}" class="btn btn-outline-primary">&larr; Előző hónap</a>
+                {% else %}
+                &nbsp &nbsp
+                {% endif %}
+                <a href="?month={{ next_month }}&year={{ next_year }}" class="btn btn-outline-primary">Következő hónap &rarr;</a>
+            </div>
+        
+            <!-- Foglalási naptár -->
+            <table class="table table-bordered text-center">
+                <thead>
+                    <tr>
+                        {% for day in days_of_week %}
+                            <th>{{ day }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for week in calendar_data %}
+                    <tr>
+                        {% for day in week %}
+                        <td class="calendar-cell {% if day.status == 'green' %}bg-success text-white{% elif day.status == 'red' %}bg-danger text-white{% elif day.status == 'grey' %}bg-secondary text-white{% else %}bg-light{% endif %}"
+                            data-date="{{ day.date|date:'Y-m-d' }}"
+                            onclick="toggleSelection(this)">
+                            {% if day.status != 'empty' %}
+                                <div>
+                                    {{ day.date.day }}
+                                </div>
+                            {% endif %}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Időpont kiválasztás -->
+        <div class="col-md-6 col-12 d-none" id="slot-selection">
+            <label for="available-slots">Válassz időpontot:</label>
+            <select id="available-slots" class="form-control">
+                <option value="" disabled selected>Nincs kiválasztott időpont</option>
+            </select>
+        </div>
+    </div>
+    <div class="text-center mt-3">
+        <button id="proceed-btn" class="btn btn-primary mt-2 d-none">Tovább a szolgáltatásokhoz</button>
+    </div>
+</div>
+<div class="container" style="height: 200px;"></div>
+
+<script>
+    let selectedDate = null;
+
+    function toggleSelection(cell) {
+        const date = cell.getAttribute("data-date");
+        if (!date || cell.classList.contains("bg-danger") || cell.classList.contains("bg-secondary")) return;
+
+        // Ha volt előző kiválasztott, állítsuk vissza zöldre
+        if (selectedDate) {
+            const prevSelected = document.querySelector(".selected-date");
+            if (prevSelected) {
+                prevSelected.classList.remove("selected-date");
+                prevSelected.classList.add("bg-success");
+            }
+        }
+
+        // Új kijelölt elem kezelése
+        cell.classList.remove("bg-success");
+        cell.classList.add("selected-date");
+
+        selectedDate = date;
+        fetchAvailableSlots(date);
+    }
+
+
+    function fetchAvailableSlots(date) {
+        fetch(`/api/available_slots/?date=${date}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.available_slots) {  // ✅ Ha van available_slots kulcs, akkor folytatja!
+                    updateDropdown(data.available_slots);
+                } else {
+                    console.error("HIBA: Nincsenek elérhető időpontok a JSON válaszban!", data);
+                }
+            })
+            .catch(error => console.error("Hiba:", error));
+    }
+
+    function updateDropdown(slots) {
+        let dropdown = document.getElementById("available-slots");
+        let proceedBtn = document.getElementById("proceed-btn");
+        let slotSection = document.getElementById("slot-selection");
+
+        dropdown.innerHTML = "";
+
+        if (slots.length > 0) {
+            slots.forEach(slot => {
+                let option = document.createElement("option");
+                option.value = slot;
+                option.textContent = slot;
+                dropdown.appendChild(option);
+            });
+
+            slotSection.classList.remove("d-none")
+            proceedBtn.classList.remove("d-none");
+        } else {
+            dropdown.innerHTML = '<option value="" disabled selected>Nincs elérhető időpont</option>';
+            slotSection.classList.remove("d-none");
+            proceedBtn.classList.add("d-none");
+        }
+    }
+</script>
+{% endblock %}

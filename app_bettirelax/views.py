@@ -21,7 +21,6 @@ def cookie_status(request):
     """
     Ellenőrzi a cookie-k állapotát, és visszaküldi JSON formátumban.
     """
-    print(f"🔍 Beérkező sütik: {request.COOKIES}")  # 🔹 Debug log
 
     cookie_groups = CookieGroup.objects.all()
     
@@ -31,7 +30,6 @@ def cookie_status(request):
         cookie_value = request.COOKIES.get(cookie_name)  # 🔹 Olvassuk ki a sütit
 
         if cookie_value is None:
-            print(f"⚠️ Süti {cookie_name} HIÁNYZIK, banner kell!")  # Debug log
             is_accepted = None
         else:
             is_accepted = cookie_value == "accepted"
@@ -43,7 +41,6 @@ def cookie_status(request):
 
         # 🔹 Ha az analytics süti ELFOGADOTT, akkor adjuk hozzá a GA4 scriptet
         if group.varname == "analytics" and is_accepted:
-            print(f"✅ Süti {cookie_name} engedélyezett, betöltjük a Google Tag Managert!")  # Debug log
             cookie_status[group.varname]["scripts"].append(
                 '<script async src="https://www.googletagmanager.com/gtag/js?id=G-YPZ37N9EBB"></script>'
                 '<script>'
@@ -54,7 +51,6 @@ def cookie_status(request):
                 '</script>'
             )
 
-    print(f"📩 Visszaküldött JSON: {cookie_status}")  # 🔹 Debug log
 
     return JsonResponse(cookie_status)
 
@@ -88,9 +84,6 @@ def accept_cookie_group(request, group_name):
         httponly=False,  # Ha True, akkor JS nem tudja olvasni
         samesite="Lax"
     )
-
-    print(f"📩 Set-Cookie küldve: {cookie_name}=accepted")  # 🔹 Debug log
-
     if group_name == "analytics":
         response_data["scripts"].append(
                 '<script async src="https://www.googletagmanager.com/gtag/js?id=G-YPZ37N9EBB"></script>'
@@ -142,8 +135,6 @@ def decline_cookie_group(request, group_name):
         httponly=False,  # Ha True, akkor JS nem tudja olvasni
         samesite="Lax"
     )
-
-    print(f"📩 Set-Cookie küldve: {cookie_name}=declined")  # 🔹 Debug log
 
     return response
 

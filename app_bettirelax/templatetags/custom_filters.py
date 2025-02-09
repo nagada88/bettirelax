@@ -17,3 +17,8 @@ def get_item(obj, key):
     if isinstance(obj, dict):
         return obj.get(key, "")
     return ""
+
+@register.filter
+def concat(value, arg):
+    """ Összefűzi a két stringet a template-ben. """
+    return f"{value}{arg}"

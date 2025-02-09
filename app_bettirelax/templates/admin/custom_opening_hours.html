@@ -1,51 +1,79 @@
 {% extends "admin/base_site.html" %}
 {% load static custom_filters %}
-
-<!-- CSS for Flatpickr -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<!-- JavaScript for Flatpickr -->
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
+{% load static  %}
 {% block content %}
+
+<link rel="icon" href={% static 'app_bettirelax/img/logo.png' %}>
     <div>
         <h1>Nyitvatartási idők beállítása</h1>
         <form method="POST">
             {% csrf_token %}
             <table class="table table-bordered">
-                <tr>
-                    <th>Nap</th>
-                    <th>Páros hét - Nyitás</th>
-                    <th>Páros hét - Zárás</th>
-                    <th>Páratlan hét - Nyitás</th>
-                    <th>Páratlan hét - Zárás</th>
-                </tr>
+                <thead>
+                    <tr>
+                        <th rowspan="2">Nap</th>  <!-- Nap oszlop egyesített marad -->
+                        <th colspan="2">Páros hét</th> <!-- Két oszlop szélességben -->
+                        <th colspan="2">Páratlan hét</th> <!-- Két oszlop szélességben -->
+                    </tr>
+                    <tr>
+                        <th>Nyitás</th>
+                        <th>Zárás</th>
+                        <th>Nyitás</th>
+                        <th>Zárás</th>
+                    </tr>
+                </thead>
                 {% for day, label in form.DAYS %}
                     <tr>
                         <td>{{ label }}</td>
                         <td>
-                            <input type="text" name="start_even_{{ day }}" 
-                                   value="{{ form.initial|get_item:'start_even_'|add:day }}" 
-                                   class="timepicker">
+                            {% with key="start_even_"|concat:day %}
+                            <input type="text" name="start_even_{{ day }}" class="timepicker"
+                                   value="{{ form.initial|get_item:key }}">
+                                {% if form.errors|get_item:key %}
+                                   <div class="invalid-feedback">
+                                       {{ form.errors|get_item:key }}
+                                   </div>
+                               {% endif %}
+                            {% endwith %}
                         </td>
                         <td>
-                            <input type="text" name="end_even_{{ day }}" 
-                                   value="{{ form.initial|get_item:'end_even_'|add:day }}" 
-                                   class="timepicker">
+                            {% with key="end_even_"|concat:day %}
+                            <input type="text" name="end_even_{{ day }}" class="timepicker"
+                                   value="{{ form.initial|get_item:key }}">
+                                   {% if form.errors|get_item:key %}
+                                   <div class="invalid-feedback">
+                                       {{ form.errors|get_item:key }}
+                                   </div>
+                                    {% endif %}
+                            {% endwith %}
                         </td>
                         <td>
-                            <input type="text" name="start_odd_{{ day }}" 
-                                   value="{{ form.initial|get_item:'start_odd_'|add:day }}" 
-                                   class="timepicker">
+                            {% with key="start_odd_"|concat:day %}
+                            <input type="text" name="start_odd_{{ day }}" class="timepicker"
+                                   value="{{ form.initial|get_item:key }}">
+                                   {% if form.errors|get_item:key %}
+                                   <div class="invalid-feedback">
+                                       {{ form.errors|get_item:key }}
+                                   </div>
+                                    {% endif %}
+                            {% endwith %}
                         </td>
                         <td>
-                            <input type="text" name="end_odd_{{ day }}" 
-                                   value="{{ form.initial|get_item:'end_odd_'|add:day }}" 
-                                   class="timepicker">
+                            {% with key="end_odd_"|concat:day %}
+                            <input type="text" name="end_odd_{{ day }}" class="timepicker"
+                                   value="{{ form.initial|get_item:key }}">
+                                   {% if form.errors|get_item:key %}
+                                   <div class="invalid-feedback">
+                                       {{ form.errors|get_item:key }}
+                                   </div>
+                                    {% endif %}
+                            {% endwith %}
                         </td>
                     </tr>
                 {% endfor %}
             </table>
-            <button type="submit" class="button">Mentés</button>
+            <br>
+            <button type="submit" class="button submit-button">Mentés</button>
         </form>
     </div>
 
@@ -55,15 +83,18 @@
 
     {# JavaScript a time picker inicializálásához #}
     <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", function() {
-            flatpickr(".timepicker", {
-                enableTime: true,
-                noCalendar: true,
-                dateFormat: "H:i",  // 24 órás formátum
-                time_24hr: true,     // Kikapcsolja az AM/PM módot
-                minuteIncrement: 30  // Csak egész és fél órák választhatók
-            });
+
+    document.addEventListener("DOMContentLoaded", function() {
+       
+        flatpickr(".timepicker", {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",  // 24 órás formátum
+            time_24hr: true,     // AM/PM kikapcsolása
+            minuteIncrement: 30  // Csak egész és fél órák választhatók
         });
+    });
+    
     </script>
 
 {% endblock %}

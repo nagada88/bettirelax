@@ -990,6 +990,21 @@ $text-color: #ffffff;
     }
 }
 
+.selected-date{
+    background-color: $button-pink !important;
+}
+
+/* Zöld cellára hover - mutató kéz */
+.calendar-cell.bg-success:hover {
+    cursor: pointer;
+    background-color: #28a745 !important; /* Egy kicsit sötétebb zöld, ha akarod */
+}
+
+/* Piros cellára hover - tiltó ikon */
+.calendar-cell.bg-danger:hover,  .calendar-cell.bg-secondary:hover{
+    cursor: not-allowed;
+}
+
 // div {
 //     border: 1px solid rgb(0, 0, 0);
 // } 

@@ -170,3 +170,90 @@ input[type=file]::-webkit-file-upload-button:hover {
 div.django-quill-widget-container{
     height: 600px !important;
 }
+
+
+
+table.table-bordered {
+    border-collapse: collapse;
+    background: #ffffff;
+    overflow: hidden;
+    font-size: 0.5rem;
+}
+
+table.table-bordered th, table.table-bordered td {
+    /* padding: 12px; */
+    border: 1px solid #dddddd;
+    text-align: center;
+    font-size: 10px;
+}
+
+table.table-bordered th {
+    background: #e1c8c8;
+    color: #494949;
+    font-weight: 100;
+    font-size: 10px;
+}
+
+/* Időpont inputok */
+.timepicker {
+    width: 30px;
+    padding: 5px;
+    font-size: 10px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+/* Mentés gomb */
+.submit-button {
+    display: block;
+    margin: 20px auto;
+    background: #e1c8c8;
+    color: 494949;
+    padding: 6px 24px !important;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.submit-button:hover {
+    background: #218838;
+}
+
+/* Csökkenti a Flatpickr teljes méretét */
+.flatpickr-calendar {
+    font-size: 12px !important;
+    max-width: 180px !important;
+    transform: scale(0.85);  /* 85%-ra kicsinyítjük */
+    transform-origin: top left;
+    transition: none !important; /* Megakadályozza a méretváltozást kattintáskor */
+}
+
+/* Az időválasztó mező kisebb legyen */
+.flatpickr-time {
+    font-size: 12px !important;
+    padding-top: 0 !important;  /* 🚀 Eltávolítja a felesleges felső paddingot */
+}
+
+/* Az AM/PM gombok és az inputmezők kisebbek */
+.flatpickr-time .flatpickr-am-pm,
+.flatpickr-time input {
+    font-size: 12px !important;
+    padding: 2px !important;
+}
+
+/* Az órák és percek fölösleges paddingjának csökkentése */
+.flatpickr-time .numInputWrapper {
+    padding-top: 0 !important;  /* 🚀 Padding levétele a számok fölött */
+}
+
+/* A gombok méretének csökkentése */
+.flatpickr-time .numInputWrapper span {
+    font-size: 12px !important;
+}
+
+/* Megakadályozza, hogy kattintáskor megnőjön a picker */
+.flatpickr-calendar.open {
+    transform: scale(0.85) !important;
+}
