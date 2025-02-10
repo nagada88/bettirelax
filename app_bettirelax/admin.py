@@ -1,6 +1,5 @@
 from django.contrib import admin
 from .models import *
-from .models import OpeningHours, SpecialOpeningHours, BookingSettings
 from django.utils.safestring import mark_safe
 from django.urls import path
 from django.shortcuts import render, redirect
