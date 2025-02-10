@@ -52,7 +52,7 @@
                 {% if forloop.counter0|divisibleby:3 or forloop.first %}
                 <div class="row">
                     {% endif %}
-                        <div class="col-xxl-4 col-lg-12 pb-5">
+                        <div class="col-xl-4 col-md-6 col-sm-12 pb-5">
                             <div class="card">
                                 <a href={% url 'service' service.slug %}><img src={{ service.service_main_img_thumb.url }} alt="Card image cap"></a>
                                 <div class="card-body text-center pt-4">
