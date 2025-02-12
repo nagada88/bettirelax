@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import OpeningHours, BookingSettings
+from .models import OpeningHours, BookingSettings, Booking
 from django import forms
 from django.urls import path
 from django.http import HttpResponseRedirect
@@ -154,5 +154,6 @@ class BookingSettingsAdmin(InstanceCounterMixin1, admin.ModelAdmin):
 # Regisztráljuk a custom admin nézetet
 admin.site.register(OpeningHours, OpeningHoursAdmin)
 admin.site.register(BookingSettings, BookingSettingsAdmin)
+admin.site.register(Booking)
 
 

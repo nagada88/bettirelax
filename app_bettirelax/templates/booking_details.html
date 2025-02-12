@@ -1,0 +1,115 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<div class="container" style="height: 200px;"></div>
+<div class="container mt-5">
+    <h1>Foglalási adatok megadása</h1>
+    <p><strong>Dátum:</strong> {{ selected_date }}</p>
+    <p><strong>Időpont:</strong> {{ selected_time }}</p>
+    <p><strong>Szolgáltatás:</strong> {{ service.service_name }}</p>
+    <p><strong>Szolgáltatás hossza:</strong> {{ duration }} perc</p>
+
+    <form method="POST" action="{% url 'confirm_booking' %}">
+        {% csrf_token %}
+        
+        <!-- Rejtett mezők az előző oldal adataival -->
+        <input type="hidden" name="date" id="selected-date">
+        <input type="hidden" name="time" id="selected-time">
+        <input type="hidden" name="service_id" id="selected-service">
+        <input type="hidden" name="duration" id="selected-duration">
+
+        <div class="form-group">
+            <label>Név</label>
+            <input type="text" name="customer_name" class="form-control" required>
+        </div>
+    
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="customer_email" class="form-control" required>
+        </div>
+    
+        <div class="form-group">
+            <label>Telefonszám</label>
+            <input type="tel" name="customer_phone" class="form-control" pattern="[0-9+ -]+" required>
+        </div>
+    
+        <hr>
+    
+        <h5>Számlázási adatok</h5>
+    
+        <div class="form-group">
+            <label>Számlázási név</label>
+            <input type="text" name="billing_name" class="form-control" required>
+        </div>
+    
+        <div class="form-group">
+            <label>Adószám (ha van)</label>
+            <input type="text" name="billing_tax_number" class="form-control">
+        </div>
+    
+        <div class="form-group">
+            <label>Irányítószám</label>
+            <input type="text" name="billing_zip" class="form-control" pattern="\d{4}" required>
+        </div>
+    
+        <div class="form-group">
+            <label>Város</label>
+            <input type="text" name="billing_city" class="form-control" required>
+        </div>
+    
+        <div class="form-group">
+            <label>Utca, házszám</label>
+            <input type="text" name="billing_address" class="form-control" required>
+        </div>
+    
+        <hr>
+    
+        <h5>Előzetes hozzájárulások</h5>
+    
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="privacy_policy" name="privacy_policy" required>
+            <label class="form-check-label" for="privacy_policy">
+                Elfogadom az <a href="" target="_blank">Adatvédelmi tájékoztatót</a>
+            </label>
+        </div>
+    
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="terms_conditions" name="terms_conditions" required>
+            <label class="form-check-label" for="terms_conditions">
+                Elfogadom a <a href="" target="_blank">Felhasználási feltételeket</a>
+            </label>
+        </div>
+    
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="contraindications" name="contraindications" required>
+            <label class="form-check-label" for="contraindications">
+                Elolvastam és megértettem az <a href="" target="_blank">Ellenjavallatokat</a>
+            </label>
+        </div>
+    
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="newsletter" name="newsletter">
+            <label class="form-check-label" for="newsletter">
+                Feliratkozom a hírlevélre
+            </label>
+        </div>
+    
+        <hr>
+    
+        <button type="submit" class="btn btn-primary mt-3">Foglalás megerősítése</button>
+    </form>
+    
+</div>
+<div class="container" style="height: 200px;"></div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const urlParams = new URLSearchParams(window.location.search);
+
+        document.getElementById("selected-date").value = urlParams.get("date") || "";
+        document.getElementById("selected-time").value = urlParams.get("time") || "";
+        document.getElementById("selected-service").value = urlParams.get("service_id") || "";
+        document.getElementById("selected-duration").value = urlParams.get("duration") || "";
+    });
+</script>
+{% endblock %}

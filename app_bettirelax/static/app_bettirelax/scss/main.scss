@@ -617,6 +617,7 @@ header{
 .pricelist{
     text-align: center;
     max-width: 500px !important;
+    font-size: 14px;
     h1{
         padding: 0;
     }
@@ -1003,6 +1004,16 @@ $text-color: #ffffff;
 /* Piros cellára hover - tiltó ikon */
 .calendar-cell.bg-danger:hover,  .calendar-cell.bg-secondary:hover{
     cursor: not-allowed;
+}
+
+.service-item {
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.service-item:hover {
+    background-color: #007bff;
+    color: white;
 }
 
 // div {

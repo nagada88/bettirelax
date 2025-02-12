@@ -25,12 +25,11 @@
             <div class="container wallet">
                 <img  src={% static 'app_bettirelax/img/wallet.png' %} alt="Pénztárca grafika, Masszázs Árak">
             </div>       
-            <h5>Fizetési lehetőségek</h5>
+            <h5 style="font-size:14px;">Fizetési lehetőségek</h5>
             <p>online: átutalás</p>
             <p>helyszínen: készpénz</p>
         </div>
     </div>
-    <div class="container" style="height: 100px"></div> 
     {% for service in services %}<br>
         <h5>{{ service.service_name }}</h5>
         <div class="row">

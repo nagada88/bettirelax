@@ -52,76 +52,174 @@
             <select id="available-slots" class="form-control">
                 <option value="" disabled selected>Nincs kiválasztott időpont</option>
             </select>
+                <h4>Elérhető szolgáltatások:</h4>
+                <div id="service-list"></div>
         </div>
     </div>
     <div class="text-center mt-3">
-        <button id="proceed-btn" class="btn btn-primary mt-2 d-none">Tovább a szolgáltatásokhoz</button>
+        <button id="booking-details-btn" class="btn btn-primary mt-2 d-none">Foglalási adatok megadása</button>
     </div>
 </div>
 <div class="container" style="height: 200px;"></div>
 
 <script>
-    let selectedDate = null;
+let selectedDate = null;
+let selectedTime = null;
+let selectedService = null;
+let selectedServiceDuration = null; 
 
-    function toggleSelection(cell) {
-        const date = cell.getAttribute("data-date");
-        if (!date || cell.classList.contains("bg-danger") || cell.classList.contains("bg-secondary")) return;
+function toggleSelection(cell) {
+    const date = cell.getAttribute("data-date");
+    if (!date || cell.classList.contains("bg-danger") || cell.classList.contains("bg-secondary")) return;
 
-        // Ha volt előző kiválasztott, állítsuk vissza zöldre
-        if (selectedDate) {
-            const prevSelected = document.querySelector(".selected-date");
-            if (prevSelected) {
-                prevSelected.classList.remove("selected-date");
-                prevSelected.classList.add("bg-success");
-            }
+    // Ha volt előző kiválasztott, állítsuk vissza zöldre
+    if (selectedDate) {
+        const prevSelected = document.querySelector(".selected-date");
+        if (prevSelected) {
+            prevSelected.classList.remove("selected-date");
+            prevSelected.classList.add("bg-success");
+
+            // ⏳ Előző szolgáltatások törlése
+            document.getElementById("service-list").innerHTML = "";
+            document.getElementById("booking-details-btn").classList.add("d-none"); // Gomb elrejtése
+            selectedService = null;
         }
-
-        // Új kijelölt elem kezelése
-        cell.classList.remove("bg-success");
-        cell.classList.add("selected-date");
-
-        selectedDate = date;
-        fetchAvailableSlots(date);
     }
 
+    // Új kijelölt elem kezelése
+    cell.classList.remove("bg-success");
+    cell.classList.add("selected-date");
 
-    function fetchAvailableSlots(date) {
-        fetch(`/api/available_slots/?date=${date}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.available_slots) {  // ✅ Ha van available_slots kulcs, akkor folytatja!
-                    updateDropdown(data.available_slots);
-                } else {
-                    console.error("HIBA: Nincsenek elérhető időpontok a JSON válaszban!", data);
-                }
-            })
-            .catch(error => console.error("Hiba:", error));
+    selectedDate = date;
+    fetchAvailableSlots(date);
+}
+
+function fetchAvailableSlots(date) {
+    fetch(`/api/available_slots/?date=${date}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.available_slots) {  // ✅ Ha van available_slots kulcs, akkor folytatja!
+                updateDropdown(data.available_slots);
+            } else {
+                console.error("HIBA: Nincsenek elérhető időpontok a JSON válaszban!", data);
+            }
+        })
+        .catch(error => console.error("Hiba:", error));
+}
+
+function updateDropdown(slots) {
+    let dropdown = document.getElementById("available-slots");
+    let slotSection = document.getElementById("slot-selection");
+
+    dropdown.innerHTML = "";
+
+    if (slots.length > 0) {
+        // 🟢 Első opció: Csak kezdetben látszódik
+        let defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Válassz időpontot";
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        defaultOption.hidden = true; // 🔥 Nem jelenik meg a legördülő listában
+        dropdown.appendChild(defaultOption);
+
+        // 📌 Időpontok hozzáadása
+        slots.forEach(slot => {
+            let option = document.createElement("option");
+            option.value = slot;
+            option.textContent = slot;
+            dropdown.appendChild(option);
+        });
+
+        slotSection.classList.remove("d-none");
+    } else {
+        // ❌ Ha nincs elérhető időpont
+        dropdown.innerHTML = '<option value="" disabled selected>Nincs elérhető időpont</option>';
+        slotSection.classList.remove("d-none");
     }
+}
 
-    function fetchAvailableServices(selectedslot){}
+document.getElementById("available-slots").addEventListener("change", function() {
+    selectedTime = this.value;
+    if (!selectedDate || !selectedTime) return;
 
-    function updateDropdown(slots) {
-        let dropdown = document.getElementById("available-slots");
-        let proceedBtn = document.getElementById("proceed-btn");
-        let slotSection = document.getElementById("slot-selection");
+    fetchAvailableServices(selectedDate, selectedTime);
+});
 
-        dropdown.innerHTML = "";
+function fetchAvailableServices(date, time) {
+    fetch(`/api/available_services/?date=${date}&time=${time}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                updateServiceList(data.available_services);
+            }
+        })
+        .catch(error => console.error("Hiba:", error));
+}
 
-        if (slots.length > 0) {
-            slots.forEach(slot => {
-                let option = document.createElement("option");
-                option.value = slot;
-                option.textContent = slot;
-                dropdown.appendChild(option);
+
+function updateServiceList(services) {
+    let serviceList = document.getElementById("service-list");
+    serviceList.innerHTML = ""; // Töröljük az előző szolgáltatásokat
+
+    if (services.length > 0) {
+        services.forEach(service => {
+            let serviceElement = document.createElement("div");
+            serviceElement.classList.add("service-item", "p-2", "border", "rounded", "mb-2", "text-center");
+            serviceElement.textContent = `${service.service_name} (${service.duration} perc)`;
+            console.log('sssss: ', service.id)
+            serviceElement.setAttribute("data-service-id", service.service_id);
+            serviceElement.setAttribute("data-service-duration", service.duration); // 🔥 ÚJ: Szolgáltatás hossza
+
+            serviceElement.addEventListener("click", function () {
+                selectService(this);
             });
 
-            slotSection.classList.remove("d-none")
-            proceedBtn.classList.remove("d-none");
-        } else {
-            dropdown.innerHTML = '<option value="" disabled selected>Nincs elérhető időpont</option>';
-            slotSection.classList.remove("d-none");
-            proceedBtn.classList.add("d-none");
-        }
+            serviceList.appendChild(serviceElement);
+        });
+    } else {
+        serviceList.innerHTML = "<p>Nincs elérhető szolgáltatás.</p>";
     }
+}
+
+function selectService(serviceElement) {
+    let serviceId = serviceElement.getAttribute("data-service-id");
+
+    console.log("Service selected:", serviceId);
+
+    // Eltávolítjuk az előző kijelölést
+    document.querySelectorAll(".service-item").forEach(el => el.classList.remove("selected-service"));
+
+    // Új kijelölés
+    serviceElement.classList.add("selected-service");
+    selectedService = serviceId;
+    selectedServiceDuration = serviceElement.getAttribute("data-service-duration");
+
+    // Engedélyezzük a tovább gombot
+    document.getElementById("booking-details-btn").classList.remove("d-none");
+}
+
+document.getElementById("booking-details-btn").addEventListener("click", function() {
+    console.log("Selected service:", selectedService);
+    console.log("Selected service duration:", selectedServiceDuration);
+    console.log("Selected date:", selectedDate);
+    console.log("Selected time:", selectedTime);
+
+    if (!selectedService || !selectedDate || !selectedTime || !selectedServiceDuration) {
+        alert("Kérlek válassz egy dátumot, időpontot és szolgáltatást!");
+        return;
+    }
+
+    const queryParams = new URLSearchParams({
+        date: selectedDate,
+        time: selectedTime,
+        service_id: selectedService,
+        duration: selectedServiceDuration,
+    });
+
+    window.location.href = `/booking/details/?${queryParams.toString()}`;
+});
 </script>
+
+
 {% endblock %}
