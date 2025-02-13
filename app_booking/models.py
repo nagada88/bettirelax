@@ -49,53 +49,35 @@ class Booking(models.Model):
         ('cancelled', 'Lemondva'),
     ]
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name="Foglaló")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, editable=False,  verbose_name="Foglaló")
     date = models.DateField(verbose_name="Dátum", null=True) 
     start_time = models.TimeField(verbose_name="Kezdés")
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
-    booked_service_type = models.TextField(default="")
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending', verbose_name='Foglalás státusza')
+    booked_service_type = models.CharField(max_length=30, default="", verbose_name='Masszázs fajtája')
 
     customer_name = models.CharField(max_length=255, default='', verbose_name="Foglaló neve",)
     customer_email = models.EmailField(default='', verbose_name="Foglaló email címe")
-    customer_phone = models.CharField(max_length=20, default='')
+    customer_phone = models.CharField(max_length=20, default='', verbose_name="Vevő telefonszáma")
 
     booked_service_length = models.PositiveIntegerField(default=30, verbose_name="Szolgáltatás időtartama (perc)")
-    booked_service_price = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="Szolgáltatás ára (Ft)")
+    booked_service_price = models.DecimalField(max_digits=10, decimal_places=2, default=0, editable=False, verbose_name="Szolgáltatás ára (Ft)")
 
     billing_name = models.CharField(max_length=255, default='', verbose_name="Számlázási név")
     billing_email = models.EmailField(default='', verbose_name="Számlázási email")
-    billing_tax_number = models.CharField(max_length=20, blank=True, null=True)
-    billing_zip = models.CharField(max_length=10, default=0)
-    billing_city = models.CharField(max_length=255, default="")
-    billing_address = models.TextField(default="")
-    newsletter = models.BooleanField(default=False)
+    billing_tax_number = models.CharField(max_length=20, blank=True, null=True, verbose_name="Adószám")
+    billing_zip = models.CharField(max_length=10, default=0, verbose_name="Irányítószám")
+    billing_city = models.CharField(max_length=255, default="", verbose_name="Számlázási cím: város")
+    billing_address = models.TextField(default="", verbose_name="Számlázási cím: utca, házszám")
+    newsletter = models.BooleanField(default=False, verbose_name="Hírlevél feliratkozás")
 
     created_at = models.DateTimeField(auto_now_add=True, null=True)
+    admin_token = models.CharField(max_length=64, unique=True, blank=True, editable=False, null=True)  # 🔑 Új mező
+
+    def save(self, *args, **kwargs):
+        # Ha még nincs admin token, akkor generálunk egyet
+        if not self.admin_token:
+            self.admin_token = str(uuid.uuid4().hex)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.customer_name} - {self.booked_service_type} ({self.date} {self.start_time})"
-
-
-    # STATUS_CHOICES = [
-    #     ('pending', 'Függőben'),
-    #     ('accepted', 'Elfogadva'),
-    #     ('cancelled', 'Lemondva'),
-    # ]
-
-    # customer_name = models.CharField(max_length=255)
-    # customer_email = models.EmailField()
-    # customer_phone = models.CharField(max_length=20)
-    
-    # billing_name = models.CharField(max_length=255)
-    # billing_tax_number = models.CharField(max_length=20, blank=True, null=True)
-    # billing_zip = models.CharField(max_length=10)
-    # billing_city = models.CharField(max_length=255)
-    # billing_address = models.TextField()
-
-    # newsletter = models.BooleanField(default=False)
-    # status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
-
-    # created_at = models.DateTimeField(auto_now_add=True)
-
-    # def __str__(self):
-    #     return f"{self.customer_name} ({self.get_status_display()})"

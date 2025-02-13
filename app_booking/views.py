@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import OpeningHours, Booking, BookingSettings
 from datetime import datetime, timedelta
@@ -18,6 +18,7 @@ from app_booking.models import Booking, BookingSettings, OpeningHours
 from app_bettirelax.models import ServicePrice
 from django.conf import settings
 from django.urls import reverse
+from django.http import HttpResponse
 
 def booking_view(request):
     """Foglalási naptár nézet, amely kezeli a hónapok közötti lapozást."""
@@ -308,7 +309,7 @@ def booking_details_view(request):
 
 
 
-def confirm_booking(request, booking_id, token):
+def submit_booking(request):
     if request.method == "POST":
         print("POST request data:", request.POST)  # 🔥 Debug: nézd meg, megérkeznek-e az adatok!
 
@@ -336,7 +337,8 @@ def confirm_booking(request, booking_id, token):
             messages.error(request, "Minden kötelező mezőt ki kell tölteni és el kell fogadni az összes kötelező hozzájárulást.")
             return redirect("booking_details")
 
-        # 🔹 Foglalás mentése
+        admin_token = get_random_string(length=32)
+
         booking = Booking.objects.create(
             start_time=start_time,
             date=start_date,
@@ -350,11 +352,11 @@ def confirm_booking(request, booking_id, token):
             billing_city=billing_city,
             billing_address=billing_address,
             newsletter=bool(newsletter),  # True/False értékké alakítás
-            status="pending"
+            status="pending",
+            admin_token=admin_token  # 🔑 Token közvetlen mentése
         )
 
         # Egyedi token generálása az admin műveletekhez
-        admin_token = get_random_string(length=32)
         booking.admin_token = admin_token
         booking.save()
 
@@ -386,7 +388,7 @@ def confirm_booking(request, booking_id, token):
                 f"Foglalási link elfogadáshoz: {admin_url}\n"
             ),
             from_email=settings.EMAIL_HOST_USER,
-            recipient_list=["brandbehozunk@gmail.com"],
+            recipient_list=["bettirelax@gmail.com"],
             fail_silently=False,
         )
         
@@ -396,3 +398,34 @@ def confirm_booking(request, booking_id, token):
 
 def booking_success(request):
     return render(request, "booking_success.html")
+
+
+
+def confirm_booking(request, booking_id, token):
+    """Admin URL alapján foglalás elfogadása."""
+    booking = get_object_or_404(Booking, id=booking_id)
+    if booking.admin_token != token:
+        return HttpResponse("Hibás token!", status=403)
+
+    # Foglalás státuszának frissítése
+    booking.status = "accepted"
+    booking.save()
+
+    # Értesítés a vevőnek
+    send_mail(
+        subject="Foglalásod megerősítve - Betti Relax",
+        message=(
+            f"Kedves {booking.customer_name},\n\n"
+            f"Foglalásodat elfogadtuk!\n\n"
+            f"Időpont: {booking.date} {booking.start_time.strftime('%H:%M')}\n"
+            f"Szolgáltatás: {booking.booked_service_type}\n\n"
+            f"Várunk szeretettel!\n\n"
+            f"Üdvözlettel:\n"
+            f"Betti Relax csapata"
+        ),
+        from_email=settings.EMAIL_HOST_USER,
+        recipient_list=[booking.customer_email],
+        fail_silently=False,
+    )
+
+    return HttpResponse("Foglalás elfogadva és email küldve a vevőnek!")
