@@ -1012,8 +1012,13 @@ $text-color: #ffffff;
 }
 
 .service-item:hover {
-    background-color: #007bff;
+    background-color: $button-pink;
     color: white;
+}
+
+.selected-service{
+    background-color: grey;
+    color: white;   
 }
 
 // div {

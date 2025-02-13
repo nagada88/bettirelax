@@ -33,6 +33,7 @@ class BookingSettings(models.Model):
     max_weeks_in_advance = models.PositiveIntegerField(default=4, verbose_name="Hány hétre előre lehet foglalni? (1-12)", choices=[(i, f"{i} hét") for i in range(1, 13)])
     min_hours_before_booking = models.PositiveIntegerField(default=24, verbose_name="Legkésőbb mennyivel előre lehet foglalni? (órákban)")
     auto_reject_time = models.PositiveIntegerField(default=12, verbose_name="Mennyi idő után utasítsuk el automatikusan? (órákban)")
+    booking_puffer =  models.DecimalField(max_digits=3, decimal_places=0, default=0, verbose_name="puffer idő (percekben)")
 
     def __str__(self):
         return "Foglalási rendszer beállításai"

@@ -7,6 +7,17 @@ from calendar import monthrange
 from django.utils.timezone import localdate
 from app_bettirelax.models import Service, ServicePrice
 from django.contrib import messages
+from django.utils.crypto import get_random_string
+from django.contrib import messages
+from django.core.mail import send_mail
+from datetime import datetime, timedelta
+from django.shortcuts import render
+from django.utils.timezone import localdate
+from calendar import monthrange
+from app_booking.models import Booking, BookingSettings, OpeningHours
+from app_bettirelax.models import ServicePrice
+from django.conf import settings
+from django.urls import reverse
 
 def booking_view(request):
     """Foglalási naptár nézet, amely kezeli a hónapok közötti lapozást."""
@@ -19,6 +30,7 @@ def booking_view(request):
     # 🔥 Foglalási beállítások lekérése
     booking_settings = BookingSettings.objects.first()
     max_weeks = booking_settings.max_weeks_in_advance if booking_settings else 4  # Ha nincs beállítás, 4 hetet engedélyezünk
+    puffer_minutes = int(booking_settings.booking_puffer) if booking_settings else 0  # Puffer idő
 
     # 📅 Engedélyezett dátum limit számítása
     max_allowed_date = today + timedelta(weeks=max_weeks)
@@ -47,31 +59,47 @@ def booking_view(request):
     for _ in range(first_day_of_week):
         week.append({"date": None, "status": "empty"})
 
+    # ⏳ Legrövidebb szolgáltatás hossza percekben
+    min_service = ServicePrice.objects.order_by("duration_minutes").first()
+    min_service_duration = min_service.duration_minutes if min_service else 15  # Alapértelmezés 15 perc
+
     # 🚀 Nyitvatartások lekérése és foglalások ellenőrzése
     for day in range(1, days_in_month + 1):
         current_date = datetime(year, month, day).date()
         day_of_week = current_date.weekday()
         is_even_week = (current_date.isocalendar()[1] % 2) == 0
 
-        if current_date > max_allowed_date:
+        # 🛑 Ha a nap már elmúlt vagy túl van a foglalható időn, legyen unavailable
+        if current_date < today or current_date > max_allowed_date:
             status = "grey"
         else:
-            # 📅 Megnézzük, hogy van-e nyitvatartás
+            # 📅 Nyitvatartásokat lekérjük
             opening_hours = OpeningHours.objects.filter(day_of_week=day_of_week, is_even_week=is_even_week)
             available_slots = []
 
-            for opening in opening_hours:
-                current_slot = opening.start_time
-                while current_slot < opening.end_time:
-                    end_slot = (datetime.combine(current_date, current_slot) + timedelta(minutes=15)).time()
-                    
-                    # ✅ Ellenőrizzük, hogy a slot foglalt-e
-                    is_taken = Booking.objects.filter(date=current_date, start_time=current_slot).exists()
-                    
-                    if not is_taken:
-                        available_slots.append(current_slot)
+            # 🔍 Foglalt időpontok összegyűjtése
+            taken_slots = []
+            for booking in Booking.objects.filter(date=current_date):
+                booking_duration = booking.booked_service_length
+                booking_end_time = (datetime.combine(current_date, booking.start_time) + timedelta(minutes=booking_duration + puffer_minutes)).time()
+                taken_slots.append((booking.start_time, booking_end_time))
 
-                    current_slot = end_slot  # ⏩ Következő 15 perces slot
+            # 📌 Nyitvatartási időpontok bejárása
+            for opening in opening_hours:
+                current_time = datetime.combine(current_date, opening.start_time)
+                end_time = datetime.combine(current_date, opening.end_time)
+
+                while current_time.time() < end_time.time():
+                    next_time = current_time + timedelta(minutes=min_service_duration)
+
+                    # ❌ Ellenőrizzük, hogy a slot egy foglalt időponthoz ütközik-e
+                    conflict = any(start <= current_time.time() < end for start, end in taken_slots)
+
+                    if not conflict and next_time.time() <= end_time.time():
+                        available_slots.append(current_time.time())
+
+                    # ⏩ Következő slotra lépünk
+                    current_time = next_time
 
             # 📅 Zöld: van elérhető időpont, Piros: nincs szabad hely
             status = "green" if any(available_slots) else "red"
@@ -107,6 +135,7 @@ def booking_view(request):
 
 def get_available_slots(request):
     """AJAX kérés kiszolgálása az elérhető időpontokra"""
+    
     date_str = request.GET.get("date")
     if not date_str:
         return JsonResponse({"error": "No date provided"}, status=400)
@@ -120,31 +149,47 @@ def get_available_slots(request):
     is_even_week = (selected_date.isocalendar()[1] % 2) == 0
 
     # ⏳ Legrövidebb szolgáltatás hossza percekben
-    min_service_duration = ServicePrice.objects.order_by("duration_minutes").first()
-    if not min_service_duration:
+    min_service = ServicePrice.objects.order_by("duration_minutes").first()
+    if not min_service:
         return JsonResponse({"success": False, "error": "Nincsenek szolgáltatások!"})
     
-    min_service_duration = min_service_duration.duration_minutes
+    min_service_duration = min_service.duration_minutes
+
+    # 🕒 Puffer idő lekérése
+    booking_settings = BookingSettings.objects.first()
+    puffer_minutes = int(booking_settings.booking_puffer) if booking_settings else 0
 
     available_slots = []
 
-    # Lekérjük az adott napi nyitvatartásokat
+    # 📅 Nyitvatartási időpontok lekérése
     opening_hours = OpeningHours.objects.filter(day_of_week=day_of_week, is_even_week=is_even_week)
-    bookings = Booking.objects.filter(date=selected_date)
 
+    # 🔍 Foglalt időpontok előre lekérdezése és gyors elérhetővé tétele
+    taken_slots = []
+    for booking in Booking.objects.filter(date=selected_date):
+        booking_duration = booking.booked_service_length
+        booking_end_time = (datetime.combine(selected_date, booking.start_time) + timedelta(minutes=booking_duration + puffer_minutes)).time()
+        taken_slots.append((booking.start_time, booking_end_time))
+
+    # 📌 Nyitvatartási időpontok bejárása
     for opening in opening_hours:
-        current_slot = opening.start_time
-        while current_slot < opening.end_time:
-            end_slot = (datetime.combine(selected_date, current_slot) + timedelta(minutes=min_service_duration)).time()
+        current_time = datetime.combine(selected_date, opening.start_time)
+        end_time = datetime.combine(selected_date, opening.end_time)
 
-            # Foglaltság ellenőrzése
-            is_taken = bookings.filter(start_time=current_slot).exists()
-            if not is_taken and end_slot <= opening.end_time:
-                available_slots.append(current_slot.strftime("%H:%M"))
+        while current_time.time() < end_time.time():
+            next_time = current_time + timedelta(minutes=min_service_duration)
 
-            current_slot = end_slot
+            # ❌ Foglaltság ellenőrzése
+            conflict = any(start <= current_time.time() < end for start, end in taken_slots)
+
+            if not conflict and next_time.time() <= end_time.time():
+                available_slots.append(current_time.time().strftime("%H:%M"))
+
+            # ⏩ Következő slotra lépünk
+            current_time = next_time
 
     return JsonResponse({"available_slots": available_slots})
+
 
 def get_available_services(request):
     """Visszaadja a kiválasztott időponttól elérhető szolgáltatásokat."""
@@ -263,13 +308,13 @@ def booking_details_view(request):
 
 
 
-def confirm_booking(request):
+def confirm_booking(request, booking_id, token):
     if request.method == "POST":
         print("POST request data:", request.POST)  # 🔥 Debug: nézd meg, megérkeznek-e az adatok!
 
         start_time = request.POST.get("time")
         start_date = request.POST.get("date")
-        service_type = Service.objects.get(id=request.POST.get("service_id"))
+        service_type = Service.objects.get(id=request.POST.get("service_id")).service_name
 
         customer_name = request.POST.get("customer_name")
         customer_email = request.POST.get("customer_email")
@@ -308,7 +353,43 @@ def confirm_booking(request):
             status="pending"
         )
 
-        messages.success(request, "  sikeresen rögzítettük! Hamarosan visszaigazolást kapsz e-mailben.")
+        # Egyedi token generálása az admin műveletekhez
+        admin_token = get_random_string(length=32)
+        booking.admin_token = admin_token
+        booking.save()
+
+        # Email küldése a vevőnek
+        send_mail(
+            subject="Foglalásod beérkezett - Betti Relax",
+            message=(
+                f"Kedves {customer_name},\n\n"
+                f"Foglalásodat rögzítettük a következő időpontra: {start_date} {start_time}.\n"
+                f"A foglalás státusza: Függőben.\n\n"
+                f"Hamarosan visszajelzünk a foglalás véglegesítéséről.\n\n"
+                f"Üdvözlettel:\n"
+                f"Betti Relax"
+            ),
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[customer_email],
+            fail_silently=False,
+        )
+
+        # Email küldése Bettinek
+        admin_url = request.build_absolute_uri(reverse('confirm_booking', args=[booking.id, admin_token]))
+        send_mail(
+            subject="Új foglalási igény érkezett",
+            message=(
+                f"Új foglalás érkezett: \n"
+                f"Név: {customer_name}\n"
+                f"Időpont: {start_date} {start_time}\n"
+                f"Szolgáltatás: {service_type}\n"
+                f"Foglalási link elfogadáshoz: {admin_url}\n"
+            ),
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=["brandbehozunk@gmail.com"],
+            fail_silently=False,
+        )
+        
         return redirect("booking_success")  # 🔥 Ide a sikeres foglalás oldalát rakd be
 
     return render(request, "booking_details.html")
