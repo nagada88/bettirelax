@@ -32,9 +32,14 @@ def booking_view(request):
     booking_settings = BookingSettings.objects.first()
     max_weeks = booking_settings.max_weeks_in_advance if booking_settings else 4  # Ha nincs beállítás, 4 hetet engedélyezünk
     puffer_minutes = int(booking_settings.booking_puffer) if booking_settings else 0  # Puffer idő
+    min_hours_before_booking = booking_settings.min_hours_before_booking if booking_settings else 24
 
     # 📅 Engedélyezett dátum limit számítása
     max_allowed_date = today + timedelta(weeks=max_weeks)
+
+    # 🕒 Minimális foglalható időpont
+    now = datetime.now()
+    min_allowed_datetime = now + timedelta(hours=min_hours_before_booking)
 
     # 📅 Hónap előző/következő navigációs változók
     prev_month = month - 1 if month > 1 else 12
@@ -96,7 +101,7 @@ def booking_view(request):
                     # ❌ Ellenőrizzük, hogy a slot egy foglalt időponthoz ütközik-e
                     conflict = any(start <= current_time.time() < end for start, end in taken_slots)
 
-                    if not conflict and next_time.time() <= end_time.time():
+                    if current_time >= min_allowed_datetime and not conflict and next_time.time() <= end_time.time():
                         available_slots.append(current_time.time())
 
                     # ⏩ Következő slotra lépünk
@@ -159,7 +164,12 @@ def get_available_slots(request):
     # 🕒 Puffer idő lekérése
     booking_settings = BookingSettings.objects.first()
     puffer_minutes = int(booking_settings.booking_puffer) if booking_settings else 0
+    min_hours_before_booking = booking_settings.min_hours_before_booking if booking_settings else 24
 
+    # ⏳ Minimális foglalható időpont kiszámítása
+    now = datetime.now()
+    min_allowed_datetime = now + timedelta(hours=min_hours_before_booking)
+                                           
     available_slots = []
 
     # 📅 Nyitvatartási időpontok lekérése
@@ -183,7 +193,7 @@ def get_available_slots(request):
             # ❌ Foglaltság ellenőrzése
             conflict = any(start <= current_time.time() < end for start, end in taken_slots)
 
-            if not conflict and next_time.time() <= end_time.time():
+            if current_time >= min_allowed_datetime and not conflict and next_time.time() <= end_time.time():
                 available_slots.append(current_time.time().strftime("%H:%M"))
 
             # ⏩ Következő slotra lépünk
@@ -388,7 +398,7 @@ def submit_booking(request):
                 f"Foglalási link elfogadáshoz: {admin_url}\n"
             ),
             from_email=settings.EMAIL_HOST_USER,
-            recipient_list=["bettirelax@gmail.com"],
+            recipient_list=["brandbehozunk@gmail.com"],
             fail_silently=False,
         )
         
