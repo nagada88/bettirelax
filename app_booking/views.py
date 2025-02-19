@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import OpeningHours, Booking, BookingSettings
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 from django.http import JsonResponse
 from calendar import monthrange
 from django.utils.timezone import localdate
@@ -10,15 +10,26 @@ from django.contrib import messages
 from django.utils.crypto import get_random_string
 from django.contrib import messages
 from django.core.mail import send_mail
-from datetime import datetime, timedelta
-from django.shortcuts import render
 from django.utils.timezone import localdate
 from calendar import monthrange
-from app_booking.models import Booking, BookingSettings, OpeningHours
-from app_bettirelax.models import ServicePrice
 from django.conf import settings
 from django.urls import reverse
 from django.http import HttpResponse
+
+MONTHS_HU = {
+    1: "január",
+    2: "február",
+    3: "március",
+    4: "április",
+    5: "május",
+    6: "június",
+    7: "július",
+    8: "augusztus",
+    9: "szeptember",
+    10: "október",
+    11: "november",
+    12: "december",
+}
 
 def booking_view(request):
     """Foglalási naptár nézet, amely kezeli a hónapok közötti lapozást."""
@@ -27,6 +38,7 @@ def booking_view(request):
     today = localdate()
     year = int(request.GET.get("year", today.year))
     month = int(request.GET.get("month", today.month))
+    month_name = MONTHS_HU[month]  # Itt történik az átalakítás
 
     # 🔥 Foglalási beállítások lekérése
     booking_settings = BookingSettings.objects.first()
@@ -92,13 +104,23 @@ def booking_view(request):
 
             # 📌 Nyitvatartási időpontok bejárása
             for opening in opening_hours:
-                current_time = datetime.combine(current_date, opening.start_time)
+                # ⏳ Kezdőidő kerekítése a legközelebbi félórás pontra
+                start_hour = opening.start_time.hour
+                start_minute = opening.start_time.minute
+
+                if start_minute > 0 and start_minute < 30:
+                    start_minute = 30
+                elif start_minute > 30:
+                    start_hour += 1
+                    start_minute = 0
+
+                current_time = datetime.combine(current_date, time(start_hour, start_minute))  # Kerekített kezdőidő
                 end_time = datetime.combine(current_date, opening.end_time)
 
                 while current_time.time() < end_time.time():
                     next_time = current_time + timedelta(minutes=min_service_duration)
 
-                    # ❌ Ellenőrizzük, hogy a slot egy foglalt időponthoz ütközik-e
+                    # ❌ Foglaltság ellenőrzése
                     conflict = any(start <= current_time.time() < end for start, end in taken_slots)
 
                     if current_time >= min_allowed_datetime and not conflict and next_time.time() <= end_time.time():
@@ -107,10 +129,14 @@ def booking_view(request):
                     # ⏩ Következő slotra lépünk
                     current_time = next_time
 
-            # 📅 Zöld: van elérhető időpont, Piros: nincs szabad hely
-            status = "green" if any(available_slots) else "red"
-                
+            # 📅 Ha a kerekítés miatt nincs szabad időpont → szürkére állítjuk a napot
+            if not available_slots:
+                status = "grey"
+            else:
+                status = "green" if any(available_slots) else "red"
+
         week.append({"date": current_date, "status": status})
+
 
         # 🌎 Ha a hét végére értünk, új sort kezdünk
         if len(week) == 7:
@@ -135,6 +161,7 @@ def booking_view(request):
         "days_of_week": days_of_week,
         "calendar_data": calendar_data,
         "today": today,
+        "month_name": month_name,
     }
 
     return render(request, "booking.html", context)
@@ -182,9 +209,20 @@ def get_available_slots(request):
         booking_end_time = (datetime.combine(selected_date, booking.start_time) + timedelta(minutes=booking_duration + puffer_minutes)).time()
         taken_slots.append((booking.start_time, booking_end_time))
 
-    # 📌 Nyitvatartási időpontok bejárása
     for opening in opening_hours:
-        current_time = datetime.combine(selected_date, opening.start_time)
+        # ⏳ Kezdőidő kerekítése a legközelebbi félórás pontra
+        start_hour = opening.start_time.hour
+        start_minute = opening.start_time.minute
+
+        # Ha 1-29 perc között van, akkor félre kerekítjük (például 08:10 → 08:30)
+        # Ha 31-59 perc között van, akkor a következő órára kerekítjük (például 08:40 → 09:00)
+        if start_minute > 0 and start_minute < 30:
+            start_minute = 30
+        elif start_minute > 30:
+            start_hour += 1
+            start_minute = 0
+
+        current_time = datetime.combine(selected_date, time(start_hour, start_minute))  # Kerekített kezdőidő
         end_time = datetime.combine(selected_date, opening.end_time)
 
         while current_time.time() < end_time.time():
@@ -196,7 +234,7 @@ def get_available_slots(request):
             if current_time >= min_allowed_datetime and not conflict and next_time.time() <= end_time.time():
                 available_slots.append(current_time.time().strftime("%H:%M"))
 
-            # ⏩ Következő slotra lépünk
+            # ⏩ Következő időpontra lépés
             current_time = next_time
 
     return JsonResponse({"available_slots": available_slots})
@@ -298,9 +336,7 @@ def booking_details_view(request):
     service_id = request.GET.get("service_id")
     duration = request.GET.get("duration")
     service = Service.objects.get(id=service_id)
-    
-    # 🚀 Debug print
-    print("GET params:", request.GET)
+    settings_obj = BookingSettings.objects.first()
     
     # Ellenőrzés
     if not all([selected_date, selected_time, service_id, duration]):
@@ -313,7 +349,11 @@ def booking_details_view(request):
         "selected_date": selected_date,
         "selected_time": selected_time,
         "service": service,
-        "duration": duration 
+        "duration": duration,
+        "terms_conditions_pdf": settings_obj.terms_conditions_pdf.url if settings_obj and settings_obj.terms_conditions_pdf else None,
+        "contraindications_pdf": settings_obj.contraindications_pdf.url if settings_obj and settings_obj.contraindications_pdf else None,
+        "privacy_policy_pdf": settings_obj.privacy_policy_pdf.url if settings_obj and settings_obj.privacy_policy_pdf else None,
+          
     }
     return render(request, "booking_details.html", context)
 
@@ -321,9 +361,8 @@ def booking_details_view(request):
 
 def submit_booking(request):
     if request.method == "POST":
-        print("POST request data:", request.POST)  # 🔥 Debug: nézd meg, megérkeznek-e az adatok!
-
-        start_time = request.POST.get("time")
+        start_time_str = request.POST.get("time")
+        start_time = datetime.strptime(start_time_str, "%H:%M").time()  # Konvertáljuk `time` típusra
         start_date = request.POST.get("date")
         service_type = Service.objects.get(id=request.POST.get("service_id")).service_name
 
@@ -370,22 +409,6 @@ def submit_booking(request):
         booking.admin_token = admin_token
         booking.save()
 
-        # Email küldése a vevőnek
-        send_mail(
-            subject="Foglalásod beérkezett - Betti Relax",
-            message=(
-                f"Kedves {customer_name},\n\n"
-                f"Foglalásodat rögzítettük a következő időpontra: {start_date} {start_time}.\n"
-                f"A foglalás státusza: Függőben.\n\n"
-                f"Hamarosan visszajelzünk a foglalás véglegesítéséről.\n\n"
-                f"Üdvözlettel:\n"
-                f"Betti Relax"
-            ),
-            from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[customer_email],
-            fail_silently=False,
-        )
-
         # Email küldése Bettinek
         admin_url = request.build_absolute_uri(reverse('confirm_booking', args=[booking.id, admin_token]))
         send_mail(
@@ -420,23 +443,6 @@ def confirm_booking(request, booking_id, token):
     # Foglalás státuszának frissítése
     booking.status = "accepted"
     booking.save()
-
-    # Értesítés a vevőnek
-    send_mail(
-        subject="Foglalásod megerősítve - Betti Relax",
-        message=(
-            f"Kedves {booking.customer_name},\n\n"
-            f"Foglalásodat elfogadtuk!\n\n"
-            f"Időpont: {booking.date} {booking.start_time.strftime('%H:%M')}\n"
-            f"Szolgáltatás: {booking.booked_service_type}\n\n"
-            f"Várunk szeretettel!\n\n"
-            f"Üdvözlettel:\n"
-            f"Betti Relax csapata"
-        ),
-        from_email=settings.EMAIL_HOST_USER,
-        recipient_list=[booking.customer_email],
-        fail_silently=False,
-    )
 
     return HttpResponse("Foglalás elfogadva és email küldve a vevőnek!")
 

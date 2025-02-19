@@ -139,17 +139,27 @@ class OpeningHoursAdmin(admin.ModelAdmin):
         """Amikor a felhasználó a Nyitvatartások admin linkre kattint, automatikusan a custom szerkesztő oldalra irányítjuk."""
         return HttpResponseRedirect(reverse("admin:custom_opening_hours"))
 
+@admin.register(BookingSettings)
+class BookingSettingsAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ("Általános beállítások", {
+            "fields": ("is_booking_enabled", "max_weeks_in_advance", "min_hours_before_booking", "auto_reject_time", "booking_puffer")
+        }),
+        ("Foglalási dokumentumok", {
+            "fields": ("terms_conditions_pdf", "contraindications_pdf", "privacy_policy_pdf")
+        }),
+    )
 
-class BookingSettingsAdmin(InstanceCounterMixin1, admin.ModelAdmin):
-    model = BookingSettings
-    list_display = ('is_booking_enabled', 'max_weeks_in_advance', 'min_hours_before_booking', 'auto_reject_time')
-    list_display_links = ('is_booking_enabled',)  # Kattinthatóvá tesszük az első mezőt
-    list_editable = ('max_weeks_in_advance', 'min_hours_before_booking', 'auto_reject_time')
+# class BookingSettingsAdmin(InstanceCounterMixin1, admin.ModelAdmin):
+#     model = BookingSettings
+#     list_display = ('is_booking_enabled', 'max_weeks_in_advance', 'min_hours_before_booking', 'auto_reject_time')
+#     list_display_links = ('is_booking_enabled',)  # Kattinthatóvá tesszük az első mezőt
+#     list_editable = ('max_weeks_in_advance', 'min_hours_before_booking', 'auto_reject_time')
 
 
-    class Meta:
-        verbose_name = "Foglalási beállítások"
-        verbose_name_plural = "Foglalási beállítások"
+#     class Meta:
+#         verbose_name = "Foglalási beállítások"
+#         verbose_name_plural = "Foglalási beállítások"
 
 @admin.register(EmailTemplate)
 class EmailTemplateAdmin(admin.ModelAdmin):
@@ -158,7 +168,7 @@ class EmailTemplateAdmin(admin.ModelAdmin):
     
 # Regisztráljuk a custom admin nézetet
 admin.site.register(OpeningHours, OpeningHoursAdmin)
-admin.site.register(BookingSettings, BookingSettingsAdmin)
+# admin.site.register(BookingSettings, BookingSettingsAdmin)
 admin.site.register(Booking)
 
 

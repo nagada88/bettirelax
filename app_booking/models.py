@@ -2,6 +2,10 @@ from django.db import models
 from app_bettirelax.models import Service, ServicePrice
 from django.contrib.auth.models import User
 from django_quill.fields import QuillField
+from django.core.mail import send_mail
+from django.conf import settings
+from django.utils.html import strip_tags
+import re
 
 # Create your models here.
 class OpeningHours(models.Model):
@@ -35,6 +39,10 @@ class BookingSettings(models.Model):
     min_hours_before_booking = models.PositiveIntegerField(default=24, verbose_name="Legkésőbb mennyivel előre lehet foglalni? (órákban)")
     auto_reject_time = models.PositiveIntegerField(default=12, verbose_name="Mennyi idő után utasítsuk el automatikusan? (órákban)")
     booking_puffer =  models.DecimalField(max_digits=3, decimal_places=0, default=0, verbose_name="puffer idő (percekben)")
+
+    terms_conditions_pdf = models.FileField(upload_to='pdfs/', blank=True, null=True, verbose_name="Felhasználási feltételek PDF")
+    contraindications_pdf = models.FileField(upload_to='pdfs/', blank=True, null=True, verbose_name="Ellenjavallatok PDF")
+    privacy_policy_pdf = models.FileField(upload_to='pdfs/', blank=True, null=True, verbose_name="Adatvédelmi irányelvek PDF")
 
     def __str__(self):
         return "Foglalási rendszer beállításai"
@@ -75,15 +83,66 @@ class Booking(models.Model):
     admin_token = models.CharField(max_length=64, unique=True, blank=True, editable=False, null=True)  # 🔑 Új mező
 
     def save(self, *args, **kwargs):
-        # Ha még nincs admin token, akkor generálunk egyet
-        if not self.admin_token:
-            self.admin_token = str(uuid.uuid4().hex)
-        super().save(*args, **kwargs)
+        is_new = self.pk is None  # Ellenőrizzük, hogy új objektum-e
+
+        if is_new:
+            self.send_status_email() 
+
+        elif not is_new:  # Csak meglévő objektum esetén ellenőrizzük a státuszt
+            original = Booking.objects.get(pk=self.pk)
+            if original.status != self.status:
+                self.send_status_email()  # Automatikusan küldünk emailt a státusz változáskor
+
+        super().save(*args, **kwargs)  # Mentjük az objektumot
+
+    def send_status_email(self):
+        """Email küldés a foglalás státuszának változása esetén."""
+        subject = ""
+
+        try:
+            template = EmailTemplate.objects.get(type=self.status)  # A státusznak megfelelő sablon lekérése
+            email_body = template.content.html  # HTML verzió
+            
+            # HTML tagek helyettesítése új sorokkal
+            plain_body = re.sub(r'<br\s*/?>', '\n', email_body)  # <br> → új sor
+            plain_body = re.sub(r'</p>', '\n', plain_body)  # </p> → új sor
+            plain_body = strip_tags(plain_body).strip()  # Eltávolítjuk a maradék HTML-t
+        except EmailTemplate.DoesNotExist:
+            plain_body = "Tisztelt ügyfelünk,\n\nA foglalásával kapcsolatban változás történt."
+
+        # Foglalás adatai blokk
+        booking_details = (
+            f"\n\nFoglalás adatai:\n"
+            f"Időpont: {self.date} {self.start_time.strftime('%H:%M')}\n"
+            f"Szolgáltatás: {self.booked_service_type}\n"
+            f"Név: {self.customer_name}\n"
+            f"Email: {self.customer_email}\n"
+            f"Státusz: {self.get_status_display()}\n"
+        )
+
+        # Email teljes tartalmának összeállítása
+        message = plain_body + booking_details
+
+        # Email tárgy beállítása
+        if self.status == "accepted":
+            subject = "Foglalásod megerősítve - Betti Relax"
+        elif self.status == "pending":
+            subject = "Foglalásod fogadtuk - Betti Relax"
+        elif self.status == "cancelled":
+            subject = "Foglalásod törölve - Betti Relax"
+            
+        if subject:
+            send_mail(
+                subject,
+                message,
+                settings.EMAIL_HOST_USER,
+                [self.customer_email],
+                fail_silently=False,
+            )
 
     def __str__(self):
         return f"{self.customer_name} - {self.booked_service_type} ({self.date} {self.start_time})"
     
-
 class EmailTemplate(models.Model):
     TYPE_CHOICES = [ 
         ("pending", "Függőben lévő foglalás"),

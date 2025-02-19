@@ -17,7 +17,6 @@ urlpatterns = [
     path('', views.introduction, name='introduction'),
     path('masszas-szigetszentmikloson/', views.introduction, name='introduction'),
     path('masszazs-szigetszentmiklos/<slug:slug>/', views.service, name='service'),
-    path('idopont-foglalas', views.booking, name='booking'),
     path('blogpost/<slug:slug>/', views.blogpost, name='blogpost'),
     path('pricelist/', views.pricelist, name='pricelist'),
     path('bloglist/', views.bloglist, name='bloglist'),

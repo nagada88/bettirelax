@@ -183,11 +183,11 @@ def blogpost(request, slug):
 
     return render(request, 'blogpost.html', context)
 
-def booking(request):
-    services = Service.objects.all()
-    context = {'services': services,'title': 'Időpontfoglalás Masszázs Szigetszentmiklós'}
+# def booking(request):
+#     services = Service.objects.all()
+#     context = {'services': services,'title': 'Időpontfoglalás Masszázs Szigetszentmiklós'}
 
-    return render(request, 'booking_temp.html', context)
+#     return render(request, 'booking_temp.html', context)
 
 
 
