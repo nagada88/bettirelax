@@ -439,3 +439,4 @@ def confirm_booking(request, booking_id, token):
     )
 
     return HttpResponse("Foglalás elfogadva és email küldve a vevőnek!")
+

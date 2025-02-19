@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import OpeningHours, BookingSettings, Booking
+from .models import OpeningHours, BookingSettings, Booking, EmailTemplate
 from django import forms
 from django.urls import path
 from django.http import HttpResponseRedirect
@@ -151,6 +151,11 @@ class BookingSettingsAdmin(InstanceCounterMixin1, admin.ModelAdmin):
         verbose_name = "Foglalási beállítások"
         verbose_name_plural = "Foglalási beállítások"
 
+@admin.register(EmailTemplate)
+class EmailTemplateAdmin(admin.ModelAdmin):
+    list_display = ("type",)
+    search_fields = ("type",)
+    
 # Regisztráljuk a custom admin nézetet
 admin.site.register(OpeningHours, OpeningHoursAdmin)
 admin.site.register(BookingSettings, BookingSettingsAdmin)

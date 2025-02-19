@@ -1,6 +1,7 @@
 from django.db import models
 from app_bettirelax.models import Service, ServicePrice
 from django.contrib.auth.models import User
+from django_quill.fields import QuillField
 
 # Create your models here.
 class OpeningHours(models.Model):
@@ -81,3 +82,21 @@ class Booking(models.Model):
 
     def __str__(self):
         return f"{self.customer_name} - {self.booked_service_type} ({self.date} {self.start_time})"
+    
+
+class EmailTemplate(models.Model):
+    TYPE_CHOICES = [ 
+        ("pending", "Függőben lévő foglalás"),
+        ("accepted", "Elfogadott foglalás"),
+        ("auto_rejected", "Automatikusan elutasított foglalás"),
+    ]
+
+    type = models.CharField(max_length=20, choices=TYPE_CHOICES, unique=True)
+    content = QuillField()
+
+    def __str__(self):
+        return dict(self.TYPE_CHOICES).get(self.type, self.type)
+    
+    class Meta:
+        verbose_name = "Email sablon"
+        verbose_name_plural = "Email sablonok"
