@@ -425,7 +425,7 @@ def submit_booking(request):
             fail_silently=False,
         )
         
-        return redirect("booking_success")  # 🔥 Ide a sikeres foglalás oldalát rakd be
+        return redirect("booking_success") 
 
     return render(request, "booking_details.html")
 

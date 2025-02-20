@@ -18,7 +18,7 @@
             </div>
         
             <!-- Foglalási naptár -->
-            <table class="table table-bordered text-center">
+            <table class="table table-bordered text-center table-calendar">
                 <thead>
                     <tr>
                         {% for day in days_of_week %}
@@ -51,7 +51,7 @@
             <label for="available-slots">Válassz időpontot:</label>
             <select id="available-slots" class="form-control">
                 <option value="" disabled selected>Nincs kiválasztott időpont</option>
-            </select>
+            </select><br>
                 <h4>Elérhető szolgáltatások:</h4>
                 <div id="service-list"></div>
         </div>

@@ -443,7 +443,7 @@ header{
         box-sizing: border-box;
         -moz-box-sizing: border-box;
         z-index: 100;
-        h1,{
+        h1{
             color: white !important; /* Fehér betű alapból */
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Fekete árnyék a jobb olvashatóság érdekében */
         }
@@ -993,12 +993,17 @@ $text-color: #ffffff;
 
 .selected-date{
     background-color: $button-pink !important;
+    color: $font-gray !important;
+}
+
+.calendar-cell.bg-success {
+    background-color: #85ac80 !important; /* Egy kicsit sötétebb zöld, ha akarod */
 }
 
 /* Zöld cellára hover - mutató kéz */
 .calendar-cell.bg-success:hover {
     cursor: pointer;
-    background-color: #28a745 !important; /* Egy kicsit sötétebb zöld, ha akarod */
+    background-color: #799b81 !important; /* Egy kicsit sötétebb zöld, ha akarod */
 }
 
 /* Piros cellára hover - tiltó ikon */
@@ -1008,19 +1013,63 @@ $text-color: #ffffff;
 
 .service-item {
     cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
+    transition: background-color 0.4s ease-in-out;
+}
+
+.btn-outline-primary{
+    color: $font-gray !important;
+    border-color: $font-gray !important;
+    transition: background-color 0.4s ease-in-out !important;
+}
+
+.btn-outline-primary:hover{
+    color: $font-gray !important;
+    border-color: $font-gray !important;
+    transition: background-color 0.4s ease-in-out !important;
+    background-color: $font-gray;
+    color: white !important;
 }
 
 .service-item:hover {
     background-color: $button-pink;
-    color: white;
 }
 
 .selected-service{
-    background-color: grey;
-    color: white;   
+    background-color: $button-pink;
 }
 
+/* Alapértelmezett beállítások */
+.table-calendar {
+    width: 100%;
+    table-layout: fixed;  /* 🔥 Oszlopok egyenlő szélességűek lesznek */
+    border-collapse: collapse;
+}
+
+/* Fejléc formázás */
+.table-calendar th {
+    @media (max-width: 576px){
+        font-size: 10px;
+    }
+    @media (min-width: 576px){
+        font-size: 14px;
+    }
+    text-align: center;
+    background-color: #f8f9fa;
+    font-family: $font-family-main-text;
+    padding:  8px 0;
+    font-weight: 200;
+}
+
+/* Cella alapstílus */
+.table-calendar td {
+    width: 14.28%;  /* 🔥 7 oszlop = 100% / 7 */
+    text-align: center;
+    vertical-align: middle;
+    padding: 10px;
+    font-size: 14px;
+    font-family: $font-family-main-text;
+    font-weight: 100;
+}
 // div {
 //     border: 1px solid rgb(0, 0, 0);
 // } 
