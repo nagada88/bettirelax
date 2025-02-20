@@ -95,12 +95,10 @@ h1, h2{
         padding: 20vw 0;
     }
     @media (min-width: 576px) {
-        height: 1000px;
         padding: 0vw 0;
     }
     img{
         width: 100%;
-        height: 100%;
         object-fit: cover;
         @media (max-width: 576px) {
             padding: 20px 10px;
