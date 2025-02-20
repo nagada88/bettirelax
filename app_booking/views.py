@@ -400,7 +400,6 @@ def submit_booking(request):
             billing_zip=billing_zip,
             billing_city=billing_city,
             billing_address=billing_address,
-            newsletter=bool(newsletter),  # True/False értékké alakítás
             status="pending",
             admin_token=admin_token  # 🔑 Token közvetlen mentése
         )
