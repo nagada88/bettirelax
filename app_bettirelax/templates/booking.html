@@ -166,10 +166,13 @@ function updateServiceList(services) {
         services.forEach(service => {
             let serviceElement = document.createElement("div");
             serviceElement.classList.add("service-item", "p-2", "border", "rounded", "mb-2", "text-center");
-            serviceElement.textContent = `${service.service_name} (${service.duration} perc)`;
-            console.log('sssss: ', service.id)
+            // 🔥 JavaScript ezres elválasztó formázás és tizedesjegyek elhagyása
+            // 🔥 Biztosítjuk, hogy az ár egész szám legyen
+            let price = Math.round(Number(service.price)); 
+            let formattedPrice = price.toLocaleString("hu-HU");
+            serviceElement.textContent = `${service.service_name} (${service.duration} perc - ${formattedPrice} Ft)`;
             serviceElement.setAttribute("data-service-id", service.service_id);
-            serviceElement.setAttribute("data-service-duration", service.duration); // 🔥 ÚJ: Szolgáltatás hossza
+            serviceElement.setAttribute("data-service-duration", service.duration); 
 
             serviceElement.addEventListener("click", function () {
                 selectService(this);

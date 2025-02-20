@@ -5,11 +5,27 @@ from django.urls import path
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import render
+import datetime
+from django.utils.timezone import now
 
 # "Foglalási rendszer" címkével ellátott szekció létrehozása az adminban
 admin.site.site_header = "Foglalási rendszer"
 admin.site.index_title = "Foglalási rendszer adminisztráció"
 admin.site.site_title = "Foglalási rendszer admin"
+
+class FutureBookingFilter(admin.SimpleListFilter):
+    title = "Jövőbeli foglalások"  # Szűrő neve az admin felületen
+    parameter_name = "future_bookings"
+
+    def lookups(self, request, model_admin):
+        return [
+            ("upcoming", "Jövőbeli foglalások"),
+        ]
+
+    def queryset(self, request, queryset):
+        if self.value() == "upcoming":
+            return queryset.filter(date__gte=now().date())  # 🔥 Csak a jövőbeli foglalásokat szűri
+        return queryset
 
 class InstanceCounterMixin1():
     def has_add_permission(self, request):
@@ -150,25 +166,18 @@ class BookingSettingsAdmin(admin.ModelAdmin):
         }),
     )
 
-# class BookingSettingsAdmin(InstanceCounterMixin1, admin.ModelAdmin):
-#     model = BookingSettings
-#     list_display = ('is_booking_enabled', 'max_weeks_in_advance', 'min_hours_before_booking', 'auto_reject_time')
-#     list_display_links = ('is_booking_enabled',)  # Kattinthatóvá tesszük az első mezőt
-#     list_editable = ('max_weeks_in_advance', 'min_hours_before_booking', 'auto_reject_time')
-
-
-#     class Meta:
-#         verbose_name = "Foglalási beállítások"
-#         verbose_name_plural = "Foglalási beállítások"
-
 @admin.register(EmailTemplate)
 class EmailTemplateAdmin(admin.ModelAdmin):
     list_display = ("type",)
     search_fields = ("type",)
     
+@admin.register(Booking)
+class BookingAdmin(admin.ModelAdmin):
+    list_display = ("customer_name", "date", "start_time", "status")  # Megjelenő oszlopok
+    list_filter = ("status", FutureBookingFilter)  # 🔥 Szűrés státusz + jövőbeli foglalások
+
 # Regisztráljuk a custom admin nézetet
 admin.site.register(OpeningHours, OpeningHoursAdmin)
 # admin.site.register(BookingSettings, BookingSettingsAdmin)
-admin.site.register(Booking)
 
 

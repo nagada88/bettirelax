@@ -77,7 +77,6 @@ class Booking(models.Model):
     billing_zip = models.CharField(max_length=10, default=0, verbose_name="Irányítószám")
     billing_city = models.CharField(max_length=255, default="", verbose_name="Számlázási cím: város")
     billing_address = models.TextField(default="", verbose_name="Számlázási cím: utca, házszám")
-    newsletter = models.BooleanField(default=False, verbose_name="Hírlevél feliratkozás")
 
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     admin_token = models.CharField(max_length=64, unique=True, blank=True, editable=False, null=True)  # 🔑 Új mező
@@ -147,7 +146,7 @@ class EmailTemplate(models.Model):
     TYPE_CHOICES = [ 
         ("pending", "Függőben lévő foglalás"),
         ("accepted", "Elfogadott foglalás"),
-        ("auto_rejected", "Automatikusan elutasított foglalás"),
+        ("auto_rejected", "Elutasított foglalás"),
     ]
 
     type = models.CharField(max_length=20, choices=TYPE_CHOICES, unique=True)

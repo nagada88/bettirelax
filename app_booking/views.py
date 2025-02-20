@@ -97,7 +97,7 @@ def booking_view(request):
 
             # 🔍 Foglalt időpontok összegyűjtése
             taken_slots = []
-            for booking in Booking.objects.filter(date=current_date):
+            for booking in Booking.objects.filter(date=current_date, status__in=["pending", "accepted"]):
                 booking_duration = booking.booked_service_length
                 booking_end_time = (datetime.combine(current_date, booking.start_time) + timedelta(minutes=booking_duration + puffer_minutes)).time()
                 taken_slots.append((booking.start_time, booking_end_time))
@@ -204,7 +204,7 @@ def get_available_slots(request):
 
     # 🔍 Foglalt időpontok előre lekérdezése és gyors elérhetővé tétele
     taken_slots = []
-    for booking in Booking.objects.filter(date=selected_date):
+    for booking in Booking.objects.filter(date=selected_date, status__in=["pending", "accepted"]):
         booking_duration = booking.booked_service_length
         booking_end_time = (datetime.combine(selected_date, booking.start_time) + timedelta(minutes=booking_duration + puffer_minutes)).time()
         taken_slots.append((booking.start_time, booking_end_time))
@@ -272,7 +272,7 @@ def get_available_services(request):
                 next_not_available = opening.end_time
 
     # 🔎 Megnézzük a már meglévő foglalásokat
-    existing_bookings = Booking.objects.filter(date=selected_date, start_time__gte=selected_time).order_by("start_time")
+    existing_bookings = Booking.objects.filter(date=selected_date, start_time__gte=selected_time, status__in=["pending", "accepted"]).order_by("start_time")
     for booking in existing_bookings:
         if not next_not_available or booking.start_time < next_not_available:
             next_not_available = booking.start_time
