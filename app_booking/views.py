@@ -380,7 +380,6 @@ def submit_booking(request):
         privacy_policy = request.POST.get("privacy_policy")
         terms_conditions = request.POST.get("terms_conditions")
         contraindications = request.POST.get("contraindications")
-        newsletter = request.POST.get("newsletter", False)  # Nem kötelező, alapból False
 
         if not all([customer_name, customer_email, customer_phone, billing_name, billing_zip, billing_city, billing_address, privacy_policy, terms_conditions, contraindications]):
             messages.error(request, "Minden kötelező mezőt ki kell tölteni és el kell fogadni az összes kötelező hozzájárulást.")
