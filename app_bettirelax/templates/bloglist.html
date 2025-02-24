@@ -20,7 +20,7 @@
 <section class="bloglist-section">
     <div class="container-fluid" style="height: 3vw"></div>        
     <center><h1>Blog</h1></center>
-    <h2>Tudnivalók | Érdekességek</h2>
+    <h2 id="blgpost">Tudnivalók | Érdekességek</h2>
     <div class="container-fluid" style="height: 4vw"></div>        
     <div class="container-fluid bloglist">
     {% for blogpost in bloglist %}
@@ -52,5 +52,17 @@
         {% endfor %}
     </div>   
 </section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var element = document.getElementById("blgpost");
+        var offset = 350; // 100 pixelrel fölé görgetünk
+        var elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+        window.scrollTo({
+            top: elementPosition - offset,
+            behavior: 'smooth'
+        });
+    });
+</script>
 
 {% endblock content %}

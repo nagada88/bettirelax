@@ -1,0 +1,35 @@
+{% load custom_filters %}
+
+{% if reviews %}
+    {% for review in reviews %} 
+            <div class=" col-xs-12 col-sm-12 col-lg-4 d-flex justify-content-center align-items-center pt-5 sm-0">
+
+                <div class="review-card">
+                    <div class="avatar">
+                        <img src="{{ review.photo_thumb.url }}" alt="Reviewer Image">
+                    </div>
+                    <div class="stars">
+                        <h3>{{ review.name }}</h3>
+                        {{ '★'|repeat:review.stars|safe }}{{ '☆'|repeat:review.remaining_stars|safe }}
+                    </div>
+                    <p>{{ review.description }}</p>
+                </div>
+            </div>
+    {% endfor %}
+{% else %}
+    <div class="centralize-div">
+    <h3 class="ui header center aligned">Nincsenek velemenyek!</h3>
+    </div>
+{% endif %}
+
+
+<div class="centralize-div py-5" id="load-more">
+  {% if reviews.has_next %}
+  <div class="ui divider"></div>
+  <center><button class="load-more btn btn-primary mt-2" hx-get="{% url 'review' %}"
+    hx-vals='{"page": "{{ reviews.next_page_number }}", "reviews": "{{ reviews }}"}' hx-target="#load-more"
+    hx-swap="outerHTML">
+    mutass többet
+  </button></center>
+  {% endif %}
+</div>

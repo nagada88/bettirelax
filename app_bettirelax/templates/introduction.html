@@ -97,6 +97,15 @@
     </div>
 </div>
 
+{% if booking_settings.is_reviews_enabled %}
+    <div class="container bio ">
+        <h2>Rólam írták</h2>
+            <div class="row">
+                {% include 'review_partial.html' %}
+            </div>
+    </div>
+{% endif %}
+
 <section class="contact-section">
 
     <div class="container hotstone">

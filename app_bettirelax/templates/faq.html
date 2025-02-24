@@ -17,7 +17,7 @@
     </div>
 </div>
 
-<div class="row accordition-faq pt-5">
+<div class="row accordition-faq pt-5" id="faq">
     <div class="col-xl-4"></div>
     <div class="col-xl-4">
         <center><h2>Gyakran feltett kérdések</h2></center>
@@ -69,4 +69,16 @@
     </div>
 </div>
 <div class="container" style="height: 200px"></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var element = document.getElementById("faq");
+    var offset = 250; // 100 pixelrel fölé görgetünk
+    var elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+    window.scrollTo({
+        top: elementPosition - offset,
+        behavior: 'smooth'
+    });
+});
+</script>
 {% endblock content %}

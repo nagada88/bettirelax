@@ -193,8 +193,9 @@ class Review(ImageHandlerMixin, models.Model):
     name = models.CharField(max_length=100, verbose_name="név")
     stars = models.PositiveSmallIntegerField(verbose_name="csillagok száma")  # 1-től 5-ig terjedő érték
     description = models.TextField(verbose_name="értékelés szövege")
-    photo = models.ImageField(upload_to='app_bettirelax/img/photos/', default='app_brandon_photography/img/photos/default.jpg')
-    photo_tumb = models.ImageField(upload_to='app_bettirelax/img/thumbs/',  default='app_brandon_photography/img/photos/default.jpg', editable=False)
+    photo = models.ImageField(upload_to='app_bettirelax/img/photos/')
+    photo_thumb = models.ImageField(upload_to='app_bettirelax/img/thumbs/', editable=False)
+    IMAGE_FIELDS = ['photo']
 
     def __str__(self):
         return f"{self.name} ({self.stars} stars)"

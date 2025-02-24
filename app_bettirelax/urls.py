@@ -25,5 +25,6 @@ urlpatterns = [
     path("cookie-accept/<str:group_name>/", views.accept_cookie_group, name="accept_cookie_group"),
     path("cookie-decline/<str:group_name>/", views.decline_cookie_group, name="decline_cookie_group"),
     path("status/", views.cookie_status, name="cookie_status"),
+    path(r'review', views.review_upload, name='review'),
     path("sitemap.xml", sitemap, {'sitemaps': sitemaps}, name="sitemap"),
     ]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

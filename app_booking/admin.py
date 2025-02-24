@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.shortcuts import render
 import datetime
 from django.utils.timezone import now
+from app_bettirelax.models import Service
 
 # "Foglalási rendszer" címkével ellátott szekció létrehozása az adminban
 admin.site.site_header = "Foglalási rendszer"
@@ -159,7 +160,7 @@ class OpeningHoursAdmin(admin.ModelAdmin):
 class BookingSettingsAdmin(admin.ModelAdmin):
     fieldsets = (
         ("Általános beállítások", {
-            "fields": ("is_booking_enabled", "max_weeks_in_advance", "min_hours_before_booking", "auto_reject_time", "booking_puffer")
+            "fields": ("is_booking_enabled","is_reviews_enabled", "max_weeks_in_advance", "min_hours_before_booking", "auto_reject_time", "booking_puffer")
         }),
         ("Foglalási dokumentumok", {
             "fields": ("terms_conditions_pdf", "contraindications_pdf", "privacy_policy_pdf")
@@ -171,10 +172,34 @@ class EmailTemplateAdmin(admin.ModelAdmin):
     list_display = ("type",)
     search_fields = ("type",)
     
+class ServiceModelChoiceField(forms.ModelChoiceField):
+    def prepare_value(self, value):
+        # Ha a value string, akkor megpróbáljuk Service objektummá konvertálni,
+        # majd visszaadjuk a pk-t, hogy a widgetnek a megfelelő értéke legyen.
+        if isinstance(value, str):
+            try:
+                service = self.queryset.get(service_name=value)
+                return service.pk
+            except self.queryset.model.DoesNotExist:
+                return value
+        return super().prepare_value(value)
+    
+class BookingAdminForm(forms.ModelForm):
+    booked_service_type = ServiceModelChoiceField(
+        queryset=Service.objects.all(),
+        label="Masszázs fajtája",
+        empty_label=None  # Üres opció eltávolítása
+    )
+
+    class Meta:
+        model = Booking
+        fields = '__all__'
+
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
     list_display = ("customer_name", "date", "start_time", "status")  # Megjelenő oszlopok
     list_filter = ("status", FutureBookingFilter)  # 🔥 Szűrés státusz + jövőbeli foglalások
+    form = BookingAdminForm
 
 # Regisztráljuk a custom admin nézetet
 admin.site.register(OpeningHours, OpeningHoursAdmin)

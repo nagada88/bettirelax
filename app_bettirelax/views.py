@@ -4,7 +4,8 @@ from django.http import JsonResponse
 from cookie_consent.util import get_cookie_value_from_request
 from cookie_consent.models import CookieGroup
 from django.shortcuts import redirect
-
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from app_booking.models import BookingSettings
 def contact_context(request):
     """
     Globális context processor, amely a kapcsolati adatokat elküldi az összes view-ba.
@@ -142,10 +143,32 @@ def decline_cookie_group(request, group_name):
 def introduction(request):
     aboutme = AboutMe.objects.first() 
     services = Service.objects.all()
+    booking_settings = BookingSettings.objects.first()
     title = "Masszázs Szigetszentmiklóson - Svédmasszázs, Aromaterápiás és Babamasszázs | Bettirelax"
-    context = {'aboutme': aboutme, 'services': services, 'title': title}
+    reviews = load_more_reviews(request)
+    context = {'aboutme': aboutme, 'services': services, 'title': title, 'reviews': reviews, 'booking_settings': booking_settings}
 
     return render(request, 'introduction.html', context)
+
+def review_upload(request):
+    reviews = load_more_reviews(request)
+    return render(request, 'review_partial.html',  {'reviews': reviews}) 
+
+def load_more_reviews(request):
+    page = request.GET.get("page")
+    reviews = Review.objects.all()
+    paginator = Paginator(reviews, 3)
+
+    for review in reviews:
+        review.remaining_stars = 5 - review.stars
+
+    try:
+        reviews = paginator.page(page)
+    except PageNotAnInteger:
+        reviews = paginator.page(1)
+    except EmptyPage:
+        reviews = paginator.page(paginator.num_pages)
+    return reviews
 
 def service(request, slug):
     service = get_object_or_404(Service, slug=slug)

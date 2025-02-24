@@ -23,7 +23,7 @@
     </div>
 </div>
 
-<div class="container service-instance">
+<div class="container service-instance" id="srvcinstance">
     <div class="container" style="height: 100px"></div>        
     <div class="row">
         <div class="col-lg-6 service-content order-2 order-xl-1">
@@ -52,5 +52,18 @@
     </p>          
 </div>
 <div class="container" style="height: 200px"></div> 
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var element = document.getElementById("srvcinstance");
+        var offset = 250; // 100 pixelrel fölé görgetünk
+        var elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+        window.scrollTo({
+            top: elementPosition - offset,
+            behavior: 'smooth'
+        });
+    });
+</script>
 
 {% endblock content %}

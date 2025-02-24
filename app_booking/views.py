@@ -100,7 +100,9 @@ def booking_view(request):
             for booking in Booking.objects.filter(date=current_date, status__in=["pending", "accepted"]):
                 booking_duration = booking.booked_service_length
                 booking_end_time = (datetime.combine(current_date, booking.start_time) + timedelta(minutes=booking_duration + puffer_minutes)).time()
-                taken_slots.append((booking.start_time, booking_end_time))
+                booking_start_time= (datetime.combine(current_date, booking.start_time) - timedelta(minutes=puffer_minutes)).time()
+                taken_slots.append((booking_start_time, booking_end_time))
+
 
             # 📌 Nyitvatartási időpontok bejárása
             for opening in opening_hours:
@@ -207,7 +209,8 @@ def get_available_slots(request):
     for booking in Booking.objects.filter(date=selected_date, status__in=["pending", "accepted"]):
         booking_duration = booking.booked_service_length
         booking_end_time = (datetime.combine(selected_date, booking.start_time) + timedelta(minutes=booking_duration + puffer_minutes)).time()
-        taken_slots.append((booking.start_time, booking_end_time))
+        booking_start_time= (datetime.combine(selected_date, booking.start_time) - timedelta(minutes=puffer_minutes)).time()
+        taken_slots.append((booking_start_time, booking_end_time))
 
     for opening in opening_hours:
         # ⏳ Kezdőidő kerekítése a legközelebbi félórás pontra

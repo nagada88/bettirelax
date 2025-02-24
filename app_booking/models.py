@@ -35,6 +35,7 @@ class OpeningHours(models.Model):
 
 class BookingSettings(models.Model):
     is_booking_enabled = models.BooleanField(default=True, verbose_name="Foglalási rendszer bekapcsolva?")
+    is_reviews_enabled = models.BooleanField(default=True, verbose_name="Reviewk megjenítése?")
     max_weeks_in_advance = models.PositiveIntegerField(default=4, verbose_name="Hány hétre előre lehet foglalni? (1-12)", choices=[(i, f"{i} hét") for i in range(1, 13)])
     min_hours_before_booking = models.PositiveIntegerField(default=24, verbose_name="Legkésőbb mennyivel előre lehet foglalni? (órákban)")
     auto_reject_time = models.PositiveIntegerField(default=12, verbose_name="Mennyi idő után utasítsuk el automatikusan? (órákban)")
@@ -56,12 +57,13 @@ class Booking(models.Model):
         ('pending', 'Függőben'),
         ('accepted', 'Elfogadva'),
         ('cancelled', 'Lemondva'),
+        ('post_cancelled', 'Utólag Lemondva'),
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, editable=False,  verbose_name="Foglaló")
     date = models.DateField(verbose_name="Dátum", null=True) 
     start_time = models.TimeField(verbose_name="Kezdés")
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending', verbose_name='Foglalás státusza')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending', verbose_name='Foglalás státusza')
     booked_service_type = models.CharField(max_length=30, default="", verbose_name='Masszázs fajtája')
 
     customer_name = models.CharField(max_length=255, default='', verbose_name="Foglaló neve",)
@@ -70,13 +72,6 @@ class Booking(models.Model):
 
     booked_service_length = models.PositiveIntegerField(default=30, verbose_name="Szolgáltatás időtartama (perc)")
     booked_service_price = models.DecimalField(max_digits=10, decimal_places=2, default=0, editable=False, verbose_name="Szolgáltatás ára (Ft)")
-
-    billing_name = models.CharField(max_length=255, default='', verbose_name="Számlázási név")
-    billing_email = models.EmailField(default='', verbose_name="Számlázási email")
-    billing_tax_number = models.CharField(max_length=20, blank=True, null=True, verbose_name="Adószám")
-    billing_zip = models.CharField(max_length=10, default=0, verbose_name="Irányítószám")
-    billing_city = models.CharField(max_length=255, default="", verbose_name="Számlázási cím: város")
-    billing_address = models.TextField(default="", verbose_name="Számlázási cím: utca, házszám")
 
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     admin_token = models.CharField(max_length=64, unique=True, blank=True, editable=False, null=True)  # 🔑 Új mező
@@ -127,9 +122,9 @@ class Booking(models.Model):
             subject = "Foglalásod megerősítve - Betti Relax"
         elif self.status == "pending":
             subject = "Foglalásod fogadtuk - Betti Relax"
-        elif self.status == "cancelled":
+        elif self.status == "cancelled" or self.status == "post_cancelled":
             subject = "Foglalásod törölve - Betti Relax"
-            
+
         if subject:
             send_mail(
                 subject,
@@ -146,10 +141,11 @@ class EmailTemplate(models.Model):
     TYPE_CHOICES = [ 
         ("pending", "Függőben lévő foglalás"),
         ("accepted", "Elfogadott foglalás"),
-        ("auto_rejected", "Elutasított foglalás"),
+        ("cancelled", "Elutasított foglalás"),
+        ("post_cancelled", "Utólag elutasított foglalás"),
     ]
 
-    type = models.CharField(max_length=20, choices=TYPE_CHOICES, unique=True)
+    type = models.CharField(max_length=30, choices=TYPE_CHOICES, unique=True)
     content = QuillField()
 
     def __str__(self):
