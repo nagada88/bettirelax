@@ -164,6 +164,7 @@ def booking_view(request):
         "calendar_data": calendar_data,
         "today": today,
         "month_name": month_name,
+        "booking_settings": booking_settings,
     }
 
     return render(request, "booking.html", context)
