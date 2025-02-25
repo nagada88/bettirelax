@@ -339,6 +339,7 @@ def booking_details_view(request):
     selected_time = request.GET.get("time")
     service_id = request.GET.get("service_id")
     duration = request.GET.get("duration")
+    print('serviceid:' ) + str(service_id)
     service = Service.objects.get(id=service_id)
     settings_obj = BookingSettings.objects.first()
     
@@ -374,18 +375,12 @@ def submit_booking(request):
         customer_email = request.POST.get("customer_email")
         customer_phone = request.POST.get("customer_phone")
         
-        billing_name = request.POST.get("billing_name")
-        billing_tax_number = request.POST.get("billing_tax_number", "")  # Nem kötelező mező
-        billing_zip = request.POST.get("billing_zip")
-        billing_city = request.POST.get("billing_city")
-        billing_address = request.POST.get("billing_address")
-
         # Kötelező checkboxok ellenőrzése
         privacy_policy = request.POST.get("privacy_policy")
         terms_conditions = request.POST.get("terms_conditions")
         contraindications = request.POST.get("contraindications")
 
-        if not all([customer_name, customer_email, customer_phone, billing_name, billing_zip, billing_city, billing_address, privacy_policy, terms_conditions, contraindications]):
+        if not all([customer_name, customer_email, customer_phone, privacy_policy, terms_conditions, contraindications]):
             messages.error(request, "Minden kötelező mezőt ki kell tölteni és el kell fogadni az összes kötelező hozzájárulást.")
             return redirect("booking_details")
 
@@ -398,11 +393,6 @@ def submit_booking(request):
             customer_name=customer_name,
             customer_email=customer_email,
             customer_phone=customer_phone,
-            billing_name=billing_name,
-            billing_tax_number=billing_tax_number,
-            billing_zip=billing_zip,
-            billing_city=billing_city,
-            billing_address=billing_address,
             status="pending",
             admin_token=admin_token  # 🔑 Token közvetlen mentése
         )
@@ -423,7 +413,7 @@ def submit_booking(request):
                 f"Foglalási link elfogadáshoz: {admin_url}\n"
             ),
             from_email=settings.EMAIL_HOST_USER,
-            recipient_list=["brandbehozunk@gmail.com"],
+            recipient_list=["bettirelax@gmail.com"],
             fail_silently=False,
         )
         
