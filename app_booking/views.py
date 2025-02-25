@@ -339,7 +339,6 @@ def booking_details_view(request):
     selected_time = request.GET.get("time")
     service_id = request.GET.get("service_id")
     duration = request.GET.get("duration")
-    print('serviceid:' ) + str(service_id)
     service = Service.objects.get(id=service_id)
     settings_obj = BookingSettings.objects.first()
     
