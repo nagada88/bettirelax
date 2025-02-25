@@ -29,12 +29,6 @@ class Command(BaseCommand):
             self.stdout.write("Nincsenek lejárt foglalások.")
             return
 
-        try:
-            auto_reject_template = EmailTemplate.objects.get(type="auto_rejected").content
-        except EmailTemplate.DoesNotExist:
-            self.stdout.write("Nincs auto_rejected email sablon!")
-            return
-
         for booking in expired_bookings:
             booking.status = "cancelled"
             booking.save()
