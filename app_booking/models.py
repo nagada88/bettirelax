@@ -143,6 +143,7 @@ class EmailTemplate(models.Model):
         ("accepted", "Elfogadott foglalás"),
         ("cancelled", "Elutasított foglalás"),
         ("post_cancelled", "Utólag elutasított foglalás"),
+        ("reminder", "Foglalási emlékeztető"),
     ]
 
     type = models.CharField(max_length=30, choices=TYPE_CHOICES, unique=True)
