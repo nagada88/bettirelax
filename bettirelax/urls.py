@@ -15,13 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('cookies/', include('cookie_consent.urls')),  # Cookie consent URL-ek
     path('', include('app_bettirelax.urls')),
-    path('', include('app_booking.urls'))
+    path('', include('app_booking.urls')),
+    path('robots.txt', TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
 ]
 
 admin.site.site_header = "Bettirelax Admin"

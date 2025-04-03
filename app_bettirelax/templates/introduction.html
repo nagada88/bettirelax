@@ -2,7 +2,7 @@
 {% load static %}       
 {% block content %}
 
-<header>
+<header  class="fade-in-on-load">
 <div id="slideshow">
     <div class="slides">
         <div class="slide" >
@@ -25,7 +25,7 @@
 </header>
 
 
-<div class="container aboutme" id="abme">
+<div class="container aboutme fade-in" id="abme">
     <div class="row">
         <div class="col-xl-6">
             <img src={{ aboutme.photo_thumb.url }} alt="Tankó Bettina Masszőr, Szigetszentmiklós" class="w-100">
@@ -41,7 +41,7 @@
     </div>
 </div>
 
-<section class="service-section" id="services">
+<section class="service-section fade-in" id="services">
     <div class="container flower">
         <img  src={% static 'app_bettirelax/img/flower.png' %} alt="Tavirózsa Grafika">
     </div>
@@ -50,7 +50,7 @@
         <h2>Masszázsok</h2>
             {% for service in services %}
                 {% if forloop.counter0|divisibleby:3 or forloop.first %}
-                <div class="row">
+                <div class="row  fade-in">
                     {% endif %}
                         <div class="col-xl-4 col-md-6 col-sm-12 pb-5">
                             <div class="card">
@@ -69,11 +69,11 @@
     </div>   
 </section>
 
-<div class="container hotstone">
+<div class="container hotstone  fade-in">
     <img  src={% static 'app_bettirelax/img/hotstone.png' %} alt="Lávakövek Tavirózsával">
 </div>
 
-<div class="container studio-gallery">
+<div class="container studio-gallery  fade-in">
     <h2>A STÚDIÓ</h2>
     <div class="row g-0">
         <!-- Első sor -->
@@ -98,7 +98,7 @@
 </div>
 
 {% if booking_settings.is_reviews_enabled %}
-    <div class="container bio ">
+    <div class="container bio fade-in">
         <h2>Rólam írták</h2>
             <div class="row">
                 {% include 'review_partial.html' %}
@@ -106,7 +106,7 @@
     </div>
 {% endif %}
 
-<section class="contact-section">
+<section class="contact-section  fade-in">
 
     <div class="container hotstone">
         <img  src={% static 'app_bettirelax/img/mapicon.png' %} alt="Elérhetőség Ikon - Lávakövekkel">

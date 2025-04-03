@@ -23,7 +23,7 @@
     </div>
 </div>
 
-<div class="container service-instance" id="srvcinstance">
+<div class="container service-instance fade-in-on-load" id="srvcinstance">
     <div class="container" style="height: 100px"></div>        
     <div class="row">
         <div class="col-lg-6 service-content order-2 order-xl-1">
@@ -34,15 +34,15 @@
             <img src={{ service.service_main_img_thumb.url }}><br><br>
         </div>
     </div>
-    <div class="container hotstone">
+    <div class="container hotstone fade-in">
         <img  src={% static 'app_bettirelax/img/hotstone.png' %} alt="Lávakövek">
     </div>
     <div class="container" style="height: 100px"></div>     
     <div class="row">
-        <div class="col-lg-6 service-image-container">
+        <div class="col-lg-6 service-image-container fade-in">
             <img src={{ service.service_secondary_img_thumb.url }}><br><br>
         </div>
-        <div class="col-lg-6 service-content">
+        <div class="col-lg-6 service-content fade-in">
             {{ service.service_secondary_description.html|safe }}
         </div>
     </div>
