@@ -27,7 +27,7 @@
                         <td>{{ label }}</td>
                         <td>
                             {% with key="start_even_"|concat:day %}
-                            <input type="text" name="start_even_{{ day }}" class="timepicker"
+                            <input type="text" inputmode="none" name="start_even_{{ day }}" class="timepicker"
                                    value="{{ form.initial|get_item:key }}">
                                 {% if form.errors|get_item:key %}
                                    <div class="invalid-feedback">
@@ -38,7 +38,7 @@
                         </td>
                         <td>
                             {% with key="end_even_"|concat:day %}
-                            <input type="text" name="end_even_{{ day }}" class="timepicker"
+                            <input type="text" inputmode="none"  name="end_even_{{ day }}" class="timepicker"
                                    value="{{ form.initial|get_item:key }}">
                                    {% if form.errors|get_item:key %}
                                    <div class="invalid-feedback">
@@ -49,7 +49,7 @@
                         </td>
                         <td>
                             {% with key="start_odd_"|concat:day %}
-                            <input type="text" name="start_odd_{{ day }}" class="timepicker"
+                            <input type="text" inputmode="none"  name="start_odd_{{ day }}" class="timepicker"
                                    value="{{ form.initial|get_item:key }}">
                                    {% if form.errors|get_item:key %}
                                    <div class="invalid-feedback">
@@ -60,7 +60,7 @@
                         </td>
                         <td>
                             {% with key="end_odd_"|concat:day %}
-                            <input type="text" name="end_odd_{{ day }}" class="timepicker"
+                            <input type="text" inputmode="none"  name="end_odd_{{ day }}" class="timepicker"
                                    value="{{ form.initial|get_item:key }}">
                                    {% if form.errors|get_item:key %}
                                    <div class="invalid-feedback">
@@ -91,7 +91,9 @@
             noCalendar: true,
             dateFormat: "H:i",  // 24 órás formátum
             time_24hr: true,     // AM/PM kikapcsolása
-            minuteIncrement: 30  // Csak egész és fél órák választhatók
+            minuteIncrement: 30,  // Csak egész és fél órák választhatók
+            allowInput: true,
+            disableMobile: true,  // 💥 EZ A LÉNYEG!
         });
     });
     

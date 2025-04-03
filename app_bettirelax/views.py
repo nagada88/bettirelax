@@ -206,6 +206,9 @@ def blogpost(request, slug):
 
     return render(request, 'blogpost.html', context)
 
+def custom_404_view(request, exception):
+    return render(request, "404.html", status=404)
+
 # def booking(request):
 #     services = Service.objects.all()
 #     context = {'services': services,'title': 'Időpontfoglalás Masszázs Szigetszentmiklós'}

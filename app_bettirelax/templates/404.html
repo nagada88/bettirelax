@@ -1,0 +1,13 @@
+{% extends 'main.html'%}
+{% load static %}       
+{% block content %}
+
+<div class="container" style="height: 200px;"></div>
+<center><img src="{% static 'app_bettirelax/img/404.webp' %}" alt="404 not found" style="border-radius: 20px; height: 250px; width: 250px;"></center><br>
+<p style="text-align: center;">Hoppá! Az oldal nem található.</p>
+<p style="text-align: center;"><a href={% url 'introduction' %}#cntct>Vissza a főoldalra</a></p>
+<div class="container" style="height: 200px;"></div>
+
+    
+
+{% endblock content %}

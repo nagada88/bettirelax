@@ -122,8 +122,10 @@ class Booking(models.Model):
             subject = "Foglalásod megerősítve - Betti Relax"
         elif self.status == "pending":
             subject = "Foglalásod fogadtuk - Betti Relax"
-        elif self.status == "cancelled" or self.status == "post_cancelled":
+        elif self.status == "cancelled":
             subject = "Foglalásod törölve - Betti Relax"
+        elif self.status == "post_cancelled":
+            subject = "Fontos: foglalásod törlésre került - Betti Relax"
 
         if subject:
             send_mail(
@@ -143,6 +145,7 @@ class EmailTemplate(models.Model):
         ("accepted", "Elfogadott foglalás"),
         ("cancelled", "Elutasított foglalás"),
         ("post_cancelled", "Utólag elutasított foglalás"),
+        ("reminder", "Foglalási emlékeztető"),
     ]
 
     type = models.CharField(max_length=30, choices=TYPE_CHOICES, unique=True)

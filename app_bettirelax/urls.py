@@ -12,6 +12,8 @@ sitemaps = {
     'blog': BlogSitemap,
 }
 
+handler404 = "app_bettirelax.views.custom_404_view"
+
 urlpatterns = [
     # path('blog/<slug:slug>/', BlogPostDetailView.as_view(), name='blog_detail'),    
     path('', views.introduction, name='introduction'),
