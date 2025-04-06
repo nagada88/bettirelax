@@ -35,6 +35,8 @@
 <link rel="stylesheet" href={% static 'app_bettirelax/css/main.css' %}>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 
+<link rel="canonical" href="https://www.bettirelax.hu/" />
+
 
 {% url "cookie_consent_cookie_group_list" as url_cookies %}
 {% static "cookie_consent/cookiebar.module.js" as cookiebar_src %}
@@ -62,7 +64,7 @@
         "postalCode": "{{ contact.adress_postal }}",
         "addressCountry": "{{ contact.adress_country }}"
       },
-      "telephone": "{{ contact.phone_number }}",
+      "telephone": "{{ contact.phone_number }}"
     }
     </script>
 
