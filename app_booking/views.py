@@ -369,6 +369,7 @@ def submit_booking(request):
         start_time = datetime.strptime(start_time_str, "%H:%M").time()  # Konvertáljuk `time` típusra
         start_date = request.POST.get("date")
         service_type = Service.objects.get(id=request.POST.get("service_id")).service_name
+        service_duration = request.POST.get("duration")
 
         customer_name = request.POST.get("customer_name")
         customer_email = request.POST.get("customer_email")
@@ -393,7 +394,8 @@ def submit_booking(request):
             customer_email=customer_email,
             customer_phone=customer_phone,
             status="pending",
-            admin_token=admin_token  # 🔑 Token közvetlen mentése
+            admin_token=admin_token,
+            booked_service_length=service_duration  # 🔑 Token közvetlen mentése
         )
 
         # Egyedi token generálása az admin műveletekhez
